@@ -1,3 +1,4 @@
+# Python, Node.js and ESP32 build environments.
 __pycache__/
 *.py[cod]
 .venv/
@@ -7,10 +8,12 @@ node_modules/
 build/
 dist/
 *.egg-info/
+# Local configuration and private inputs or generated analysis artifacts.
 .env*
 private/
 private-artifacts/
 evidence/
+# Personal password records, map/firmware payloads and raw logs.
 *-password.txt
 *-password.json
 *.iso
@@ -19,4 +22,5 @@ evidence/
 *.elf
 *.zip
 *.log
+# Browser-check output and other local working files.
 .local/
