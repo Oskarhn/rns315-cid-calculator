@@ -35,7 +35,7 @@
       <details><summary>Technical details</summary><p>CID with calculated CRC: <code id="cid-normalized"></code></p><p id="crc-note"></p><p>The password is 16 binary bytes shown as 32 hexadecimal characters. The ESP32 tool converts the characters to the correct bytes.</p></details>
     </section>
     <p id="status-message" role="status" aria-live="polite"></p>
-    <details class="help"><summary>What is CID, and where do I find it?</summary><p>CID is the identity stored in the SD card itself, separate from the USB reader's serial number. An ordinary USB reader can copy maps without necessarily supporting CID reads or card locking.</p><p>With the ESP32 setup below, click Read CID. If you already have CID from another tool, paste it above.</p><a href="guide.html#equipment">See the equipment and wiring →</a></details>
+    <details class="help"><summary>What is CID, and where do I find it?</summary><p>CID is the identity stored in the SD card itself, separate from the USB reader's serial number. An ordinary USB reader can copy maps without necessarily supporting CID reads or card locking.</p><p>With the ESP32 setup below, click Read CID. If you already have CID from another tool, paste it above.</p><p>A compatible native SD slot may let you do the card setup without ESP32, but it also needs suitable CMD42 software. I haven't tested that route myself.</p><p><a href="guide.html#native-reader">Read the native SD reader notes →</a></p><a href="guide.html#equipment">See the equipment and wiring →</a></details>
   </section>
   <section id="hardware" class="surface secondary" aria-labelledby="hardware-title">
     <p class="eyebrow">USING AN ESP32?</p><h2 id="hardware-title">Read CID and lock the card.</h2>

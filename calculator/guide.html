@@ -25,6 +25,8 @@
 <p><strong>Correct:</strong> <code>SD card/navpsf_update/files.md5</code></p>
 <p><strong>Wrong:</strong> <code>SD card/V12/navpsf_update/files.md5</code></p>
 <p>Copy the whole extracted package without changing filenames. Do not copy the ZIP/RAR archive itself or change the card's CID.</p>
+<h3>Could my computer's own SD slot do the next part?</h3>
+<p>Possibly. A compatible native SD/MMC reader and the right software can take the place of ESP32. I haven't tested that route myself, so the steps below follow the ESP32 setup I've used. See <a href="#native-reader">native SD reader notes</a> before buying hardware. A built-in slot isn't automatically compatible, and a passive microSD-to-SD adapter isn't the same thing as a USB reader.</p>
 <h2 id="equipment">4. Connect the ESP32 and SD module</h2>
 <p>Use a <strong>classic ESP32-WROOM-32 / ESP32 DevKit</strong>, a USB data cable, six jumper wires and an SD module. This wiring uses a <strong>full-size MH-SD module with a labeled 5V input, a 3.3 V regulator and suitable SPI level shifting</strong>.</p>
 <p><strong>Unplug USB before changing wires or moving the card.</strong> Follow the printed pin names, not their physical position: ESP32 boards have different layouts.</p>
@@ -177,4 +179,49 @@ python -m platformio run -d sd-card/esp32 -t upload
 <h2>Prepared SD card</h2>
 <p>If you prefer a prepared card, <a href="https://www.satnavishop.co.uk/vw-rns315-sat-nav-sd-card-update-navigation-map-2020-586-p.asp">Satnavishop in the UK lists RNS315 V12 UK &amp; Europe</a>. Confirm the West region and compatibility before ordering. Follow its supplier's instructions; a prepared card normally does not need preparation with this calculator.</p>
 <p>Map data is not included. Obtain maps you are entitled to use. A link to a package does not establish the rights to third-party uploads or authenticate every downloaded archive.</p>
-<p>Source pages reviewed on 4 November 2026. Do not use RNS310, RNS510 or Discover Media maps just because a filename also contains Europe or V12.</p></article><footer>Original illustrations. Sources and credits are included in the repository.</footer></main></body></html>
+<p>Source pages reviewed on 4 November 2026. Do not use RNS310, RNS510 or Discover Media maps just because a filename also contains Europe or V12.</p>
+<h2 id="native-reader">Native SD reader notes</h2>
+<p><strong>Possibly, if it gives you direct SD/MMC access and you have compatible password-locking software.</strong> An SD slot built into a computer is worth checking before buying more hardware, but the slot alone isn't enough.</p>
+<p><strong>I haven't tested this native-reader route myself. My two working card tests used ESP32.</strong> This page documents what I found in other projects and how to check whether your computer might be suitable.</p>
+<h2>What the research shows</h2>
+<p><a href="https://github.com/TudorGruian/vw_mmc-tools">TudorGruian's vw_mmc-tools</a> reports Passat B7/RNS315 tests on Ubuntu and openSUSE, using <code>/dev/mmcblk0</code> and <code>lock_sd</code>. Its guide also notes kernel requirements for unlocking again.</p>
+<p>In the comments under <a href="https://blog.danman.eu/updating-rns315-maps-for-fun-and-profit/">danman's RNS315 article</a>, a reader describes doing this with a laptop's PCI card reader and modified Ubuntu. Danman confirms that this route needs the right reader and kernel support. His later <a href="https://www.spinics.net/lists/linux-mmc/msg80514.html">Linux CMD42 patch</a> shows password operations through the MMC ioctl interface. These are specific software setups; they don't establish compatibility with every current laptop or operating system.</p>
+<p>That supports the conclusion that <strong>a suitable PC setup can replace the ESP32</strong>. Whether your particular reader and software can do it still needs checking.</p>
+<h2>What the reader must support</h2>
+<p>There are two separate jobs:</p>
+<ol>
+<li>Read the card's actual <strong>CID</strong>.</li>
+<li>Set and check its <strong>CMD42 password lock</strong>, with a way to access the locked card again later.</li>
+</ol>
+<p>Reading CID solves the calculation step. It doesn't prove that the same reader and driver can lock or unlock the card. Linux documents CID as a <a href="https://www.kernel.org/doc/html/latest/driver-api/mmc/mmc-dev-attrs.html">read-only SD/MMC device attribute</a>, while password commands need additional software and driver support.</p>
+<p>The key distinction is <strong>native SD/MMC access versus USB mass storage</strong>. A native host, often PCI/PCIe-based in a laptop, is the usual starting point. A built-in slot can still be connected through USB internally. Windows also has separate <a href="https://learn.microsoft.com/en-us/windows-hardware/drivers/sd/sd-card-driver-stack">native SD and USB storage driver stacks</a>, so being able to copy files in Explorer doesn't establish raw SD-command support.</p>
+<h2>Does a microSD-to-SD adapter matter?</h2>
+<p>A normal <strong>passive microSD-to-full-size-SD adapter</strong> just lets the card fit the slot. It is different from a USB card reader and doesn't by itself rule out this route. Kingston documents using microSD cards in full-size SD slots through the supplied adapter in its <a href="https://media.kingston.com/pdfs/MKF_283.1_Flash_Memory_Guide_EN.pdf">Flash Memory Guide</a>.</p>
+<p>So the rule isn't "no adapter." What matters is the reader's connection and the software's access to the card commands.</p>
+<h2>Check the interface on Linux</h2>
+<p>These commands only inspect the system and read card information. They don't lock, format or change the card.</p>
+<ol>
+<li>Insert the card and list storage devices:</li>
+</ol>
+<p><code>text
+   lsblk -o NAME,SIZE,TYPE,TRAN,MODEL</code></p>
+<ol>
+<li>
+<p>Identify the removable card by its capacity and by what appears when you insert it. A native card may appear as <code>/dev/mmcblk0</code>, <code>/dev/mmcblk1</code> or another number. <code>/dev/sdb</code>-style USB storage doesn't expose the same native MMC interface.</p>
+</li>
+<li>
+<p>Check the selected device's type and CID. <strong>The name below is only an example; replace it with your card's device.</strong> A computer's internal eMMC storage can also have an <code>mmcblk</code> name, so don't assume the first one is your card.</p>
+</li>
+</ol>
+<p><code>text
+   cat /sys/block/mmcblk0/device/type
+   cat /sys/block/mmcblk0/device/cid</code></p>
+<p>For an SD card, the type should be <code>SD</code>, and CID is a hexadecimal value. Internal eMMC usually reports <code>MMC</code>.</p>
+<ol>
+<li>Paste the CID into the calculator, or pass it to <code>python -m rns315_cid</code>.</li>
+</ol>
+<p>If the CID file is missing or inaccessible, you haven't established a usable native interface. If CID can be read, that's a useful first check, but CMD42 still needs separate verification.</p>
+<h2>Using the calculator with this route</h2>
+<p>You can calculate the password from any correctly read CID. The browser's <strong>Connect ESP32</strong>, <strong>Read CID</strong> and locking buttons specifically control the included ESP32 program; they don't control a computer's built-in SD reader.</p>
+<p>Completing the native route needs a compatible external CMD42 tool and a driver/kernel combination that supports the required operations. Check its password format: the calculator displays <strong>16 binary bytes as 32 hexadecimal characters</strong>, not a 32-byte text password. Older guides often change CID to a fixed value; this calculator uses your card's existing CID, so don't copy their fixed CID or password.</p>
+<p>For the walkthrough I've used on my own cards, follow the <a href="#equipment">ESP32 steps</a>. The native reader is an alternative to investigate, not a feature implemented by this repository's browser controls.</p></article><footer>Original illustrations. Sources and credits are included in the repository.</footer></main></body></html>
