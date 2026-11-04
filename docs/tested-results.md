@@ -22,6 +22,14 @@ Before the calculation was recovered, I bought a password for my own card. The c
 
 ## Software checks
 
+### Downloaded-copy check · 4 November 2026
+
+The GitHub ZIP was downloaded and checked against a saved private CID/password pair from one of my cards. The Python calculator, command-line output, JSON output and browser calculator all matched that stored password exactly.
+
+The browser check ran in Chrome and Edge, with 70 checks in each. It covered valid CID formats, invalid and oversized input, repeated calculations, copying, saving the password file and narrow screens. Another 4,096 synthetic CIDs gave matching results in the separate Python and JavaScript implementations. No private card values are included in the test output or public fixtures.
+
+The checks also found and fixed three connection-handling issues: conflicting lock status was accepted, a failed serial startup could leave a port open, and a stalled write could hide the response timeout. Regression tests now cover these cases. Serial fault checks use simulated ports; they don't write to a card.
+
 The Python and JavaScript implementations are checked separately. The automated checks cover:
 
 - The public CID/password pairs and CRC normalization.
