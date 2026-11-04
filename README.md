@@ -26,11 +26,15 @@ The calculator runs straight from the folder. Use desktop Chrome or Edge if you 
 | Item | Purpose |
 |---|---|
 | 8–32 GB SDHC card, preferably 16 or 32 GB | Store the maps on a single FAT32 partition. |
-| Ordinary USB card reader | Copy map files from your computer. |
-| Classic ESP32-WROOM-32 / ESP32 DevKit, SD module and jumper wires | Read CID and set the CMD42 card password. |
+| Built-in SD slot or ordinary USB card reader | Copy map files from your computer. |
+| Classic ESP32-WROOM-32 / ESP32 DevKit, SD module and jumper wires | Read CID and set the CMD42 password in the walkthrough below. A compatible native PC reader may replace this setup. |
 | RNS315 V12 EU West map package | See [map sources](docs/map-downloads.md). |
 
 The guide uses a full-size MH-SD module with a suitable regulator and level shifting. It accepts full-size SD cards and microSD cards in passive SD adapters. Wire it by the printed pin names, using the [diagram](docs/update-maps.md#4-connect-the-esp32-and-sd-module).
+
+### Already have an SD slot in your computer?
+
+You **may be able to skip the ESP32** if the reader exposes native SD/MMC access and your software supports both CID reads and CMD42 password locking. A built-in slot alone doesn't guarantee this, and a passive microSD-to-SD adapter is fine in principle. **I haven't tested the native-reader route myself; my two working card tests used ESP32.** The [reader notes](docs/native-sd-readers.md) cover the published examples, the limitations and a read-only Linux check.
 
 ## The workflow
 
@@ -45,6 +49,8 @@ Copy the files before locking the card. CMD42 password locking is different from
 I wanted to understand why copying the right map files wasn't enough, and why I had to buy a password for a card I already owned. **Daniel Kučera (danman)** had shown how to capture the password the radio expects using an SD sniffer, a logic analyzer and PulseView. His write-up gave me a useful starting point.
 
 I handled the equipment, wiring, cards and tests in the car. I used AI to help with the app, coding and the harder parts of the firmware analysis. We recovered the calculation from European RNS315 firmware, which let me calculate the password directly from CID. The [project story](docs/how-i-built-it.md) explains how, and the [technical notes](docs/technical-analysis.md) give the exact steps. Danman's [original article](https://blog.danman.eu/updating-rns315-maps-for-fun-and-profit/) gets full credit for the earlier sniffing work.
+
+Preparing RNS315 cards was already possible. For example, [vw_mmc-tools](https://github.com/TudorGruian/vw_mmc-tools) documents changing a card to a known CID and using its known password. This repo takes the card's existing CID and calculates the matching password locally, with the rule and source included. That's what it adds alongside the walkthrough and my card tests; I'm not claiming to have invented SD locking or RNS315 map updates.
 
 ## Terminal use
 
