@@ -8,7 +8,7 @@ function report(locked = true) {
 async function main() {
   assert.deepEqual(parseReport(report()), {cid:CID, locked:true, passwordClass:true});
   assert.equal(parseReport(report(false)).locked, false);
-  for (const bad of [report().replace('END_READONLY_REPORT OK','END_READONLY_REPORT ERROR'),report().replace('CMD10_DATA_CRC16=OK','CMD10_DATA_CRC16=FAIL'),report().replace(CID,'123'),report().replace('R2=0x01','R2=0x0100'),report().replace('RNS315_SD_TOOL_1','OTHER_TOOL'), report().replace('R2=0x01','R2=0x80')]) assert.throws(()=>parseReport(bad));
+  for (const bad of [report().replace('END_READONLY_REPORT OK','END_READONLY_REPORT ERROR'),report().replace('CMD10_DATA_CRC16=OK','CMD10_DATA_CRC16=FAIL'),report().replace(CID,'123'),report().replace('R2=0x01','R2=0x0100'),report().replace('RNS315_SD_TOOL_1','OTHER_TOOL'), report().replace('R2=0x01','R2=0x80'),report().replace('CARD_LOCKED_FLAG=yes','CARD_LOCKED_FLAG=no')]) assert.throws(()=>parseReport(bad));
   const c = new Connection(()=>{},()=>{});
   const first = c.wait(/^OK$/, 1000);
   assert.throws(()=>c.wait(/^OK$/,1000), /progress/);
@@ -30,6 +30,32 @@ async function main() {
   failed.port={readable:{getReader(){return {async read(){if(reads++===0)return {value:new TextEncoder().encode('CMD42_REJECTED R1=04\n')};return {done:true};},releaseLock(){}};}},async close(){}};
   const rejected=failed.wait(/^LOCK_VERIFIED$/,1000); const check=assert.rejects(rejected,/stopped/); await failed.readLoop(); await check;
   const timeout=new Connection(()=>{},()=>{}); await assert.rejects(timeout.wait(/^OK$/,5), /in time/);
-  console.log('Serial framing, CID/status validation, concurrent-request rejection, timeout and CMD42 error handling passed. No devices accessed.');
+  // Regressions: unplugging during startup must not leak a port or rejection.
+  for (const missing of ['readable','writable']) {
+    let closeCalls=0;
+    const port={async open(){},readable:{},writable:{},async close(){closeCalls++;}};
+    port[missing]=null;
+    const startup=new Connection(()=>{},()=>{});
+    await assert.rejects(startup.open({async requestPort(){return port;}}),/serial streams/);
+    assert.equal(closeCalls,1);
+    assert.equal(startup.port,null);
+  }
+  let closedAfterReaderFailure=0;
+  const readerFailure=new Connection(()=>{},()=>{});
+  await assert.rejects(readerFailure.open({async requestPort(){return {async open(){},readable:{getReader(){throw new Error('reader unavailable');}},writable:{},async close(){closedAfterReaderFailure++;}};}}),/reader unavailable/);
+  assert.ok(closedAfterReaderFailure>0);
+  assert.equal(readerFailure.port,null);
+  // A write that never settles must still respect the response deadline.
+  let writeLockReleased=false;
+  const stalled=new Connection(()=>{},()=>{});
+  stalled.port={writable:{getWriter(){return {write(){return new Promise(()=>{});},releaseLock(){writeLockReleased=true;}};}}};
+  const outcome=await Promise.race([
+    stalled.query('READ',/^DONE$/,5).then(()=> 'unexpected success',()=> 'timeout'),
+    new Promise(resolve=>setTimeout(()=>resolve('hung'),100))
+  ]);
+  assert.equal(outcome,'timeout');
+  assert.ok(writeLockReleased);
+  assert.equal(stalled.pending,null);
+  console.log('Serial framing, status consistency, startup cleanup, stalled-write deadlines and command errors passed. No devices accessed.');
 }
 main().catch(error=>{console.error(error);process.exitCode=1;});
