@@ -2,6 +2,20 @@
 
 The calculator itself does not require firmware, Ghidra or extra Python packages. These optional research steps reproduce how the firmware was unpacked.
 
+## Files in this folder
+
+| File or folder | What it does |
+|---|---|
+| `decode_update.py` | Runs the decoding stages in order. |
+| `scripts/extract_iso.py` | Checks the source identity and extracts the ISO contents. |
+| `scripts/unpack_update_records.py` | Separates the DAT update records. |
+| `scripts/` | Program-frame parsing, decoding, resource extraction and analysis ELF generation. |
+| `ghidra/BlackfinPasswordEmulation.java` | Runs the recovered password function in a bounded emulator. |
+
+The exact password rule and source hashes are in the [technical analysis](../docs/technical-analysis.md).
+
+## Run the decoder
+
 Supply a local ISO on disk. The parser accepts only the exact 40,540,160-byte EU 1508/0270 image whose SHA-256 is documented in [research notes](../docs/technical-analysis.md).
 
 From the repository root:
