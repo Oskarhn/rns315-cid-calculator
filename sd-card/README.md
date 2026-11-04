@@ -2,6 +2,8 @@
 
 This folder holds the ESP32 side of the setup. It reads the card's CID and handles CMD42 password locking; the calculator runs on your computer.
 
+You may be able to use a compatible native SD/MMC reader instead. I haven't tested that route myself; see the [reader research and checks](../docs/native-sd-readers.md). A built-in slot alone doesn't guarantee CMD42 support. This folder's program and flashing helper are for the ESP32 route.
+
 - **Windows:** connect the ESP32 with its SD socket empty, then double-click [flash-esp32.cmd](flash-esp32.cmd).
 - **Other systems or an existing PlatformIO install:** from the repository root, run `python -m platformio run -d sd-card/esp32 -t upload`.
 
