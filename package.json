@@ -2,7 +2,8 @@
   "name": "rns315-cid-calculator",
   "version": "1.0.0",
   "private": true,
-  "description": "Development tools for the offline RNS315 calculator",
+  "description": "Browser calculator and development checks for RNS315 SD card passwords",
+  "license": "MIT",
   "scripts": {
     "test": "node tests/test-password-calculator.cjs && node tests/test-card-connection.cjs",
     "test:browser": "node tests/test-browser.cjs"
