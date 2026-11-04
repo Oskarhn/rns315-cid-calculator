@@ -1,0 +1,110 @@
+[
+  {
+    "name": "public-v9-cid-change-guide",
+    "cid": "5D53424C32424D31013917CA53010400",
+    "source": "https://github.com/TudorGruian/vw_mmc-tools",
+    "password_sha256": "42cce20cc86f260ff20b0b0347c41614611b238bfa67bfa75172fcef8c4dc64d"
+  },
+  {
+    "name": "public-v12-cid-change-guide",
+    "cid": "744A605344432020103333FCB8012999",
+    "source": "https://www.motorcarsoft.com/viewtopic.php?t=18312",
+    "password_sha256": "2ef75d1d4b5984b57949be5c553e1c215d8659bc4de585983e9b8c250a2ce266"
+  },
+  {
+    "name": "public-mhh-2024-card-a",
+    "cid": "035344534131364780532E054A015300",
+    "source": "https://mhhauto.com/Thread-VW-RNS315-map-update?page=67",
+    "password_sha256": "622130964e6f7ec00674326a9a0cd6769c352c3229923ba8c0a21f00c234f351",
+    "source_post": "595",
+    "source_date": "2024-07-22",
+    "source_kind": "reported-card",
+    "retrieved_via": "public-search-index-excerpt",
+    "retrieved_on": "2026-11-02",
+    "direct_page_retrieval": "blocked or unavailable; no login or bypass attempted"
+  },
+  {
+    "name": "public-mhh-2024-card-b",
+    "cid": "03534453433136478054520AB3013800",
+    "source": "https://mhhauto.com/Thread-VW-RNS315-map-update?page=67",
+    "password_sha256": "96af2f9427cf3724f5cb8aeca83a5382fd6c37eeaa8c853fa8d5115e3ee9ba12",
+    "source_post": "595",
+    "source_date": "2024-07-22",
+    "source_kind": "reported-card",
+    "retrieved_via": "public-search-index-excerpt",
+    "retrieved_on": "2026-11-02",
+    "direct_page_retrieval": "blocked or unavailable; no login or bypass attempted"
+  },
+  {
+    "name": "public-mhh-2024-card-c",
+    "cid": "035344534C313647807CA64370011800",
+    "source": "https://mhhauto.com/Thread-VW-RNS315-map-update?page=67",
+    "password_sha256": "444d159e057063b1f6a5a4f2ac150b8a1294bee4fc9a74bffc64389b5e56e02d",
+    "source_post": "595",
+    "source_date": "2024-07-22",
+    "source_kind": "reported-card",
+    "retrieved_via": "public-search-index-excerpt",
+    "retrieved_on": "2026-11-02",
+    "direct_page_retrieval": "blocked or unavailable; no login or bypass attempted"
+  },
+  {
+    "name": "public-mhh-2024-card-d",
+    "cid": "02544D5341303847049C0000A200A401",
+    "source": "https://mhhauto.com/Thread-VW-RNS315-map-update?page=67",
+    "password_sha256": "2faca814f34a2928c64926d846f1eac21d7ac801823bcfafaffd486c23b8e83c",
+    "source_post": "596/597",
+    "source_date": "2024-09-05/2024-09-06",
+    "source_kind": "reported-card",
+    "retrieved_via": "public-search-index-excerpt",
+    "retrieved_on": "2026-11-02",
+    "direct_page_retrieval": "blocked or unavailable; no login or bypass attempted"
+  },
+  {
+    "name": "public-gpszone-2017-card",
+    "cid": "1B534D30303030301071445382010C00",
+    "source": "https://gpszone.ro/viewtopic.php?p=8177",
+    "password_sha256": "170f7d77dde5db7eeff2ce4d316a0cebf2aff0a39c4b4c101f8d1eacfbf96449",
+    "source_post": "41",
+    "source_date": "2017-07-28",
+    "source_kind": "reported-card",
+    "retrieved_via": "public-search-index-excerpt",
+    "retrieved_on": "2026-11-02",
+    "direct_page_retrieval": "blocked or unavailable; no login or bypass attempted"
+  },
+  {
+    "name": "public-clouseau-demo-10",
+    "cid": "10000000000000000000000000000000",
+    "source": "https://mhhauto.com/Thread-RNS-315-UNLOCK-LOCK-DEVICE-PASSWORD-SUPPORT",
+    "password_sha256": "f47b39959acb3f1faf106b2dba45a048624549d1dd5f0a1874d2eae11ebf7e29",
+    "source_post": "1",
+    "source_date": "2017-03-19, edited 2018-02-06",
+    "source_kind": "published-demonstration",
+    "retrieved_via": "public-search-index-excerpt",
+    "retrieved_on": "2026-11-02",
+    "direct_page_retrieval": "blocked or unavailable; no login or bypass attempted"
+  },
+  {
+    "name": "public-clouseau-demo-20",
+    "cid": "20000000000000000000000000000000",
+    "source": "https://mhhauto.com/Thread-RNS-315-UNLOCK-LOCK-DEVICE-PASSWORD-SUPPORT",
+    "password_sha256": "1e820eda897294ceba08115c835fcc8939ea3b085469a8469c30a3009d73daf6",
+    "source_post": "1",
+    "source_date": "2017-03-19, edited 2018-02-06",
+    "source_kind": "published-demonstration",
+    "retrieved_via": "public-search-index-excerpt",
+    "retrieved_on": "2026-11-02",
+    "direct_page_retrieval": "blocked or unavailable; no login or bypass attempted"
+  },
+  {
+    "name": "public-clouseau-demo-30",
+    "cid": "30000000000000000000000000000000",
+    "source": "https://mhhauto.com/Thread-RNS-315-UNLOCK-LOCK-DEVICE-PASSWORD-SUPPORT",
+    "password_sha256": "adf7258cfbef499bdbd1d4aa35883a78308b62a3429b2ef413d9a310a052280d",
+    "source_post": "1",
+    "source_date": "2017-03-19, edited 2018-02-06",
+    "source_kind": "published-demonstration",
+    "retrieved_via": "public-search-index-excerpt",
+    "retrieved_on": "2026-11-02",
+    "direct_page_retrieval": "blocked or unavailable; no login or bypass attempted"
+  }
+]

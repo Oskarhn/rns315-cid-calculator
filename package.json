@@ -1,0 +1,13 @@
+{
+  "name": "rns315-cid-calculator",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Development tools for the offline RNS315 calculator",
+  "scripts": {
+    "test": "node web/test.cjs && node tests/test_serial.cjs",
+    "test:browser": "node tests/browser.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}

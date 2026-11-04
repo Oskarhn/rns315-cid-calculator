@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="820" viewBox="0 0 1100 820" role="img" aria-label="Illustrated RNS315 map-update choices">
+<title>Illustrated RNS315 map-update choices</title><defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="#196656"/></marker></defs>
+<style>text{font-family:Segoe UI,Arial,sans-serif;fill:#192a31}.title{font-size:30px;font-weight:700}.small{font-size:17px;fill:#52646a}.label{font-size:21px;font-weight:600}.mono{font-family:Consolas,monospace;font-size:19px}.white{fill:#fffefa}.green{fill:#196656}</style>
+<rect width="1100" height="820" rx="12" fill="#f2f0eb"/>
+<text x="40" y="54" class="title">Look for these choices on RNS315</text>
+<text x="40" y="87" class="small">Illustrations. Menu wording and appearance may vary.</text>
+<rect x="40" y="115" width="650" height="180" rx="10" fill="#242c33"/>
+<text x="75" y="155" class="label" style="fill:white">Assign this SD card?</text>
+<text x="75" y="192" class="small" style="fill:#ccd5da">The card becomes associated with this unit.</text>
+<rect x="350" y="222" width="290" height="47" rx="4" fill="#eaf2ee"/>
+<text x="435" y="253" class="label">Assign</text>
+<circle cx="493" cy="246" r="69" fill="none" stroke="#d6a53e" stroke-width="4"/>
+<path d="M765 245H650" stroke="#196656" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="785" y="230" class="label">1. Assign the card</text>
+<text x="785" y="262" class="small">When prompted.</text>
+<rect x="40" y="325" width="650" height="180" rx="10" fill="#242c33"/>
+<text x="75" y="370" class="label" style="fill:white">Map data on SD: EU West V12</text>
+<rect x="75" y="414" width="240" height="54" rx="4" fill="#d8dfdf"/><text x="150" y="449" class="label">Use SD</text>
+<rect x="350" y="414" width="290" height="54" rx="4" fill="#eaf2ee"/><text x="440" y="449" class="label">Install</text>
+<path d="M765 442H650" stroke="#196656" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="785" y="420" class="label">2. Install the maps</text><text x="785" y="452" class="small">Leave the card inserted.</text>
+<rect x="40" y="535" width="650" height="180" rx="10" fill="#242c33"/>
+<text x="75" y="580" class="label" style="fill:white">Navigation database</text>
+<text x="75" y="627" class="mono" style="fill:#eaf2ee">Installed map version: V12</text>
+<rect x="350" y="652" width="290" height="43" rx="4" fill="#eaf2ee"/><text x="417" y="681" class="label">Remove SD card</text>
+<path d="M765 620H650" stroke="#196656" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="785" y="602" class="label">3. Check V12</text><text x="785" y="634" class="small">Eject it through the menu.</text>
+<text x="40" y="772" class="small">Use SD reads maps directly from the card, which must remain in the radio.</text></svg>

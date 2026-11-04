@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'none'; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <title>RNS315 · Prepare your map card</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="calculator.js" defer></script>
+  <script src="serial.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+<main>
+  <header><a class="brand" href="index.html"><span class="sd-icon" aria-hidden="true"></span>RNS315 <span>MAP TOOLS</span></a><span class="offline">Calculated on your computer</span></header>
+  <nav aria-label="Workflow"><a href="guide.html">1. Copy maps</a><a href="#calculator" aria-current="step">2. Calculate password</a><a href="#hardware">3. Lock card</a><a href="guide.html#radio">4. Update the radio</a></nav>
+  <section id="calculator" class="surface" aria-labelledby="title">
+    <p class="eyebrow">SD CARD · EUROPEAN RNS315</p>
+    <h1 id="title">Prepare your map card.</h1>
+    <p class="lead">Paste your card's CID to calculate the password RNS315 needs. You can also read CID directly with an ESP32.</p>
+    <noscript><p>Enable JavaScript to use the calculator.</p></noscript>
+    <form id="cid-form" novalidate>
+      <div class="label-row"><label for="cid-input">Card CID</label><span id="cid-count" aria-hidden="true">0 / 32 characters</span></div>
+      <textarea id="cid-input" rows="2" maxlength="256" spellcheck="false" autocomplete="off" autocapitalize="characters" aria-describedby="cid-help error-message" placeholder="Paste CID here"></textarea>
+      <p id="cid-help" class="hint">30 or 32 characters. Spaces and lowercase letters are fine.</p>
+      <p id="error-message" class="error" role="alert"></p>
+      <div class="actions"><button type="submit" class="primary" id="calculate-button">Calculate password <span aria-hidden="true">→</span></button><button type="button" id="clear-button">Clear</button><button type="button" id="example-button" class="text-button">Try an example</button></div>
+    </form>
+    <section id="result-panel" class="result" aria-labelledby="result-title" hidden>
+      <div class="label-row"><h2 id="result-title">Your card password</h2><span>16 BYTE · HEX</span></div>
+      <label class="sr-only" for="password-output">Calculated password</label>
+      <div class="password-row"><input id="password-output" readonly autocomplete="off" spellcheck="false"><button id="copy-button" type="button">Copy</button></div>
+      <div class="actions"><button id="save-button" type="button">Save CID and password</button><span class="hint">Keep the file so you can open the card on your computer later.</span></div>
+      <details><summary>Technical details</summary><p>CID with calculated CRC: <code id="cid-normalized"></code></p><p id="crc-note"></p><p>The password is 16 binary bytes shown as 32 hexadecimal characters. The ESP32 tool converts the characters to the correct bytes.</p></details>
+    </section>
+    <p id="status-message" role="status" aria-live="polite"></p>
+    <details class="help"><summary>What is CID, and where do I find it?</summary><p>CID is the identity stored in the SD card itself, separate from the USB reader's serial number. An ordinary USB reader can copy maps without necessarily supporting CID reads or card locking.</p><p>With the ESP32 setup below, click Read CID. If you already have CID from another tool, paste it above.</p><a href="guide.html#equipment">See the equipment and wiring →</a></details>
+  </section>
+  <section id="hardware" class="surface secondary" aria-labelledby="hardware-title">
+    <p class="eyebrow">USING AN ESP32?</p><h2 id="hardware-title">Read CID and lock the card.</h2>
+    <p>Use Chrome or Edge on your computer. <a href="guide.html#esp32">Wire the module and install the ESP32 program first.</a> Copy the map files before locking the card.</p>
+    <p id="serial-support" class="hint"></p>
+    <div class="actions"><button id="connect-button" type="button">Connect ESP32</button><button id="read-button" type="button" disabled>Read CID</button><button id="disconnect-button" type="button" disabled>Disconnect</button></div>
+    <p id="card-state" role="status" aria-live="polite">No ESP32 connected.</p>
+    <label class="check"><input id="prepared-check" type="checkbox"> The maps are copied, and I have saved CID and password.</label>
+    <div class="actions"><button id="lock-button" class="primary" type="button" disabled>Lock card for RNS315</button><button id="unlock-button" type="button" disabled>Open card for PC</button></div>
+    <p id="device-message" role="status" aria-live="polite"></p>
+    <details><summary>Show technical status</summary><pre id="serial-output" aria-label="ESP32 status"></pre></details>
+  </section>
+  <aside class="afterword"><strong>Use the right maps.</strong> Use maps for European RNS315. RNS310, RNS510 and Discover Media use different formats. <a href="guide.html">Open the illustrated guide →</a></aside>
+  <footer><p>No account or online service. CID and password stay on your computer.</p><p>With credit to <a href="https://blog.danman.eu/updating-rns315-maps-for-fun-and-profit/" rel="noreferrer">Daniel Kučera (danman) for his SD sniffing work</a>. <a href="../CREDITS.md">Sources and credits</a></p></footer>
+</main>
+</body></html>

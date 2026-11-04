@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rns315-cid-calculator"
+version = "1.0.0"
+description = "Offline CID calculator and illustrated RNS315 map-update guide"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = []
+
+[project.scripts]
+rns315-cid = "rns315_cid.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["rns315_cid*"]

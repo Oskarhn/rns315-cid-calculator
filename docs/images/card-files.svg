@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="470" viewBox="0 0 1100 470" role="img" aria-label="Place the map folder directly in the SD card&#x27;s root">
+<title>Place the map folder directly in the SD card&#x27;s root</title><defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="#196656"/></marker></defs>
+<style>text{font-family:Segoe UI,Arial,sans-serif;fill:#192a31}.title{font-size:30px;font-weight:700}.small{font-size:17px;fill:#52646a}.label{font-size:21px;font-weight:600}.mono{font-family:Consolas,monospace;font-size:19px}.white{fill:#fffefa}.green{fill:#196656}</style>
+<rect width="1100" height="470" rx="12" fill="#f2f0eb"/>
+<text x="40" y="54" class="title">The correct folder layout</text>
+<rect x="40" y="90" width="640" height="325" rx="8" fill="#fffefa" stroke="#ced5d3"/>
+<rect x="40" y="90" width="640" height="45" rx="8" fill="#e6ece8"/>
+<text x="65" y="120" class="small">This PC  /  SD card</text>
+<text x="70" y="175" class="mono">SD card (root)</text>
+<text x="100" y="220" class="mono">└─ navpsf_update/</text>
+<rect x="135" y="240" width="305" height="115" rx="5" fill="#eaf2ee" stroke="#196656" stroke-width="2"/>
+<text x="155" y="270" class="mono">├─ files.md5</text>
+<text x="155" y="305" class="mono">├─ version.txt</text>
+<text x="155" y="340" class="mono">└─ … other map files</text>
+<path d="M735 200H440" stroke="#196656" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="735" y="165" class="label">In the root directory</text>
+<text x="735" y="240" class="small">No extra V12 folder</text><text x="735" y="267" class="small">around navpsf_update.</text>
+<text x="70" y="390" class="small">Copy extracted files, not the ZIP/RAR archive itself.</text>
+<text x="40" y="450" class="small">Illustrated folder layout. Map filenames vary by package.</text></svg>

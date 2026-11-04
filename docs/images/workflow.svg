@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="330" viewBox="0 0 1100 330" role="img" aria-label="From map package to RNS315 in four steps">
+<title>From map package to RNS315 in four steps</title><defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="#196656"/></marker></defs>
+<style>text{font-family:Segoe UI,Arial,sans-serif;fill:#192a31}.title{font-size:30px;font-weight:700}.small{font-size:17px;fill:#52646a}.label{font-size:21px;font-weight:600}.mono{font-family:Consolas,monospace;font-size:19px}.white{fill:#fffefa}.green{fill:#196656}</style>
+<rect width="1100" height="330" rx="12" fill="#f2f0eb"/>
+<text x="40" y="54" class="title">Four steps to a prepared map card</text>
+<text x="40" y="87" class="small">Copy the files before locking the card.</text>
+<rect x="40" y="130" width="225" height="145" rx="8" fill="#fffefa" stroke="#ced5d3"/>
+<circle cx="70" cy="164" r="16" fill="#196656"/><text x="65" y="170" style="font-size:17px;fill:white">1</text>
+<text x="58" y="212" class="label">Copy maps</text><text x="58" y="245" class="small">Computer → SD card</text>
+<path d="M270 200h24" stroke="#196656" stroke-width="3" marker-end="url(#arrow)"/><rect x="305" y="130" width="225" height="145" rx="8" fill="#fffefa" stroke="#ced5d3"/>
+<circle cx="335" cy="164" r="16" fill="#196656"/><text x="330" y="170" style="font-size:17px;fill:white">2</text>
+<text x="323" y="212" class="label">Calculate password</text><text x="323" y="245" class="small">CID → calculator</text>
+<path d="M535 200h24" stroke="#196656" stroke-width="3" marker-end="url(#arrow)"/><rect x="570" y="130" width="225" height="145" rx="8" fill="#fffefa" stroke="#ced5d3"/>
+<circle cx="600" cy="164" r="16" fill="#196656"/><text x="595" y="170" style="font-size:17px;fill:white">3</text>
+<text x="588" y="212" class="label">Lock the card</text><text x="588" y="245" class="small">ESP32 → CMD42</text>
+<path d="M800 200h24" stroke="#196656" stroke-width="3" marker-end="url(#arrow)"/><rect x="835" y="130" width="225" height="145" rx="8" fill="#fffefa" stroke="#ced5d3"/>
+<circle cx="865" cy="164" r="16" fill="#196656"/><text x="860" y="170" style="font-size:17px;fill:white">4</text>
+<text x="853" y="212" class="label">Update the radio</text><text x="853" y="245" class="small">SD card → RNS315</text>
+</svg>

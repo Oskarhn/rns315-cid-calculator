@@ -1,0 +1,179 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="referrer" content="no-referrer"><title>RNS315 · Illustrated guide</title><link rel="stylesheet" href="styles.css"></head><body><main class="guide"><header><a class="brand" href="index.html">← RNS315 calculator</a></header><article class="surface"><h1>Update RNS315 maps, step by step</h1>
+<p>Copy the maps first, set the card password, then let the radio use or install the maps. The illustrations and terminal examples show what to do and which output to look for.</p>
+<p><img alt="Workflow" src="../docs/images/workflow.svg" /></p>
+<h2>1. Download and open the tool</h2>
+<ol>
+<li>On GitHub, select <strong>Code → Download ZIP</strong>.</li>
+<li>Extract the entire ZIP. Do not open the tool inside the ZIP preview.</li>
+<li>Double-click <strong>START.html</strong>. Use desktop Chrome or Edge if you want to connect an ESP32.</li>
+</ol>
+<p>The calculator works offline. Installing the ESP32 build tools for the first time needs an internet connection.</p>
+<h2>2. Get the right maps</h2>
+<p>Use <strong>RNS315 V12 EU West / Western Europe</strong>, also called <strong>EUR_W_V12</strong>. This package includes Norway. <a href="#map-sources">Map sources</a> includes an Italian page for the package and a prepared-card alternative.</p>
+<p>Check that your radio is RNS315: hold <strong>SETUP</strong> for about ten seconds and open <strong>Versions</strong>. You do not need to update the radio firmware to run this calculator.</p>
+<h2>3. Copy maps to the SD card</h2>
+<p>Prefer a <strong>16 or 32 GB SDHC card</strong>, with one <strong>FAT32 partition in MBR</strong>, preferably using <strong>32 KiB clusters</strong>. Back up anything you want to keep before formatting. Formatting deletes files on the selected card; check its capacity and drive letter carefully.</p>
+<ol>
+<li>Put the card in an ordinary USB reader.</li>
+<li>Extract the map archive on your computer.</li>
+<li>Copy <strong>navpsf_update</strong> directly into the card's root directory.</li>
+<li>Open that folder on the card. It should contain <strong>files.md5</strong>, <strong>version.txt</strong> and the map files.</li>
+<li>Safely eject the card in your operating system.</li>
+</ol>
+<p><img alt="Correct folder layout" src="../docs/images/card-files.svg" /></p>
+<p><strong>Correct:</strong> <code>SD card/navpsf_update/files.md5</code><br />
+<strong>Wrong:</strong> <code>SD card/V12/navpsf_update/files.md5</code></p>
+<p>Copy the whole extracted package without changing filenames. Do not copy the ZIP/RAR archive itself or change the card's CID.</p>
+<h2 id="equipment">4. Connect the ESP32 and SD module</h2>
+<p>Use a <strong>classic ESP32-WROOM-32 / ESP32 DevKit</strong>, a USB data cable, six jumper wires and an SD module. This wiring uses a <strong>full-size MH-SD module with a labeled 5V input, a 3.3 V regulator and suitable SPI level shifting</strong>.</p>
+<p><strong>Unplug USB before changing wires or moving the card.</strong> Follow the printed pin names, not their physical position: ESP32 boards have different layouts.</p>
+<p><img alt="Labeled wiring diagram" src="../docs/images/wiring.svg" /></p>
+<table>
+<thead>
+<tr>
+<th>SD module</th>
+<th>ESP32</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GND</td>
+<td>GND</td>
+</tr>
+<tr>
+<td>5V</td>
+<td>5V / VIN from USB</td>
+</tr>
+<tr>
+<td>CS</td>
+<td>GPIO27</td>
+</tr>
+<tr>
+<td>MOSI</td>
+<td>GPIO23</td>
+</tr>
+<tr>
+<td>SCK / CLK</td>
+<td>GPIO18</td>
+</tr>
+<tr>
+<td>MISO</td>
+<td>GPIO19</td>
+</tr>
+<tr>
+<td>3V3</td>
+<td>Leave disconnected on this 5V module</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Never feed 5 V into a bare SD card or a 3.3 V-only module.</strong> If your module only has a 3V3 input, use its specified 3.3 V supply and follow its documentation. ESP32 signal pins use 3.3 V.</p>
+<p>Keep the wires short. On modules with two pins per label, use one row consistently and check the labels. An SCK wire shifted by one position is easy to miss.</p>
+<h2 id="esp32">5. Install the ESP32 program</h2>
+<p>Do this once. Leave the SD socket empty while programming.</p>
+<p><strong>Windows:</strong> install <a href="https://www.python.org/downloads/windows/">Python 3 with Python Launcher</a>, then double-click <strong>Flash-ESP32.cmd</strong>. The script creates a local tool environment, installs PlatformIO and uploads this repository's program to ESP32. It replaces the existing ESP32 program; it does not upload anything to the radio.</p>
+<p><strong>Linux/macOS</strong>, or if you already use PlatformIO, run these commands from the repository directory:</p>
+<pre><code class="language-text">python -m pip install platformio==6.1.18
+python -m platformio run -d esp32 -t upload
+</code></pre>
+<p>If several microcontrollers are connected, disconnect the others first. Close other serial monitors. If uploading stops at <strong>Connecting</strong>, hold <strong>BOOT</strong> until the connection starts, then release it. Do not hold BOOT during normal use afterwards.</p>
+<p><strong>Expected final message:</strong> <code>SUCCESS</code>. Unplug USB, insert the prepared SD card into the module, then reconnect USB.</p>
+<p>You can build the program without uploading anything:</p>
+<pre><code class="language-text">python -m platformio run -d esp32
+</code></pre>
+<p><img alt="Actual terminal output from building the included ESP32 program" src="../docs/images/terminal-build.png" /></p>
+<p>The screenshot shows a build. Adding <code>-t upload</code> also programs the connected ESP32.</p>
+<h2>6. Read CID and save the password</h2>
+<ol>
+<li>Open <strong>START.html</strong> in Chrome or Edge.</li>
+<li>Click <strong>Connect ESP32</strong> and select its serial port in the browser's dialog.</li>
+<li>The tool reads CID and calculates the password. <strong>Read CID</strong> refreshes it when needed.</li>
+<li>Click <strong>Save CID and password</strong>.</li>
+<li>Check that <strong>rns315-card-password.txt</strong> was saved in your downloads folder. Keep it on your computer.</li>
+</ol>
+<p><img alt="Calculator showing the public example and save button" src="../docs/images/calculator-desktop.png" /></p>
+<p>The screenshot uses a public example. <strong>Your card has its own CID and password.</strong> If you already read CID with another tool, paste it into the calculator and click <strong>Calculate password</strong>.</p>
+<h3>Terminal alternative</h3>
+<p>Open a terminal in the extracted repository directory and run:</p>
+<pre><code class="language-text">python -m rns315_cid 5D53424C32424D31013917CA53010400
+</code></pre>
+<p><img alt="Calculator command and output" src="../docs/images/terminal-calculator.png" /></p>
+<p>Replace the example with your card's CID. The command prints the 32-character hexadecimal password. This command only calculates the value; use the browser's ESP32 controls for card locking.</p>
+<h2>7. Lock the card</h2>
+<ol>
+<li>Check the box confirming that the maps are copied and you have saved CID and password.</li>
+<li>Click <strong>Lock card for RNS315</strong> and confirm.</li>
+<li>Wait for <strong>Card is locked</strong>. Technical status shows <code>LOCK_VERIFIED</code>, followed by a fresh status read.</li>
+<li>Click <strong>Disconnect</strong>, unplug USB and wait ten seconds. Leave the card in the module.</li>
+<li>Reconnect USB, choose <strong>Connect ESP32</strong>, and check that the card is still reported as locked after power was removed.</li>
+<li>Disconnect again and unplug USB before removing the card.</li>
+</ol>
+<p><img alt="Expected technical output after locking" src="../docs/images/lock-result.svg" /></p>
+<p>This is an expected-output example. After locking, an ordinary USB reader may report an inaccessible card. Do not format it. The physical LOCK switch does not perform CMD42 password locking.</p>
+<h2 id="radio">8. Update the radio</h2>
+<ol>
+<li>Park the car and maintain stable power during installation. Use appropriate battery support for a long session; never run an engine in an enclosed space.</li>
+<li>Insert the card into RNS315 and wait about ten seconds.</li>
+<li>If prompted to <strong>Assign</strong> the card, select that option. Read the dialog: the card becomes associated with the unit.</li>
+<li>Look for <strong>EU West V12 / EUR_W_V12</strong> in the map information.</li>
+<li>Choose <strong>Install</strong> to copy maps into the radio. <strong>Use SD</strong> uses the maps directly from the card, which must remain inserted.</li>
+<li>Wait for completion. Allow plenty of time: a full installation can take around two hours or more. Do not remove the card or force a reset during copying.</li>
+<li>Open <strong>Navigation database / Versions</strong> and check the installed V12 version. Use <strong>Remove SD card</strong> in the radio menu before physically removing it.</li>
+</ol>
+<p><img alt="Illustrated radio choices" src="../docs/images/radio-steps.svg" /></p>
+<p><em>Radio screens are illustrations. Labels and appearance vary with language and software version.</em></p>
+<p>With normal shutdown, map installation can continue when the radio is switched on again. Keep the same card inserted and its contents unchanged between sessions. Follow the message on your screen; normal shutdown and a forced reset are different operations. See the <a href="https://manualzilla.com/doc/5919683/rns-310--rns-315">owner's manual</a>.</p>
+<h2>Open the card on a computer again</h2>
+<ol>
+<li>Eject it through the radio menu and wait for confirmation.</li>
+<li>With ESP32 unplugged, insert the card into its SD module. Connect USB.</li>
+<li>Open the calculator and click <strong>Connect ESP32</strong>. CID and the calculated password appear.</li>
+<li>Save the password, check the confirmation box and click <strong>Open card for PC</strong>.</li>
+<li>Wait for <strong>Card is open</strong> / <code>PASSWORD_CLEAR_VERIFIED</code>.</li>
+<li>Disconnect and unplug USB before moving the card into your USB reader.</li>
+</ol>
+<p>This uses the password calculated for that CID. It will not open a card locked with a different custom password. To prepare it for RNS315 again, repeat the locking step.</p>
+<h2>Troubleshooting</h2>
+<table>
+<thead>
+<tr>
+<th>What you see</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>No ESP32 in the port list</td>
+<td>Try a USB data cable, check its USB driver and close other programs using the port.</td>
+</tr>
+<tr>
+<td>CMD0 or CID read error</td>
+<td>Unplug USB. Check power, GND and SCK/MISO/MOSI/CS wiring.</td>
+</tr>
+<tr>
+<td>ESP32 connected but no response</td>
+<td>Check that this repository's program is installed. Reconnect without holding BOOT.</td>
+</tr>
+<tr>
+<td>Card does not support password commands</td>
+<td>Use an SDHC card with CMD42 support. Capacity or brand alone does not guarantee support.</td>
+</tr>
+<tr>
+<td>Card remains locked after a power cycle</td>
+<td>That is the expected state before moving it to RNS315.</td>
+</tr>
+<tr>
+<td>SD error in the radio</td>
+<td>Check the RNS315 map format, folder layout and password for the actual card's CID.</td>
+</tr>
+</tbody>
+</table>
+<p>You do not need an SD sniffer for this workflow. The <a href="../CREDITS.md">earlier sniffing work is credited here</a>.</p>
+<h2 id="map-sources">Map sources</h2>
+<p>Look for <strong>RNS315 West Europe V12 2020</strong>, also called <strong>EUR_W_V12</strong>. West includes Norway. Volkswagen lists part number <strong>3AA 051 866 BE</strong> in its <a href="https://vw-sklep.pl/produkty/mapy-nawigacyjne-krajow-europy-zachodniej-rns-315-wersja-v12">product description</a>.</p>
+<h2>Map package</h2>
+<p><a href="https://www.gbcnet.net/archive/index.php/t-94940.html">GbcNet: Volkswagen RNS315 West Europe V12 2020</a> is an Italian discussion page linking to a download thread and external file hosts for <strong>Europa Ovest / West</strong>. It is not a Russian site. Attachments or hosts may require an account, and links can change. The file hosts are separate from this repository.</p>
+<p>The <a href="https://www.gbcnet.net/showthread.php?94939-Volkswagen-RNS-315-West-Europe-V12-2020-DOWNLOAD">download thread is here</a>. Choose West, extract the archive and look for <code>navpsf_update</code>.</p>
+<h2>Prepared SD card</h2>
+<p>If you prefer a prepared card, <a href="https://www.satnavishop.co.uk/vw-rns315-sat-nav-sd-card-update-navigation-map-2020-586-p.asp">Satnavishop in the UK lists RNS315 V12 UK &amp; Europe</a>. Confirm the West region and compatibility before ordering. Follow its supplier's instructions; a prepared card normally does not need preparation with this calculator.</p>
+<p>Map data is not included. Obtain maps you are entitled to use. A link to a package does not establish the rights to third-party uploads or authenticate every downloaded archive.</p>
+<p>Source pages reviewed on 4 November 2026. Do not use RNS310, RNS510 or Discover Media maps just because a filename also contains Europe or V12.</p></article><footer>Original illustrations. Sources and credits are included in the repository.</footer></main></body></html>
