@@ -1,13 +1,9 @@
 from pathlib import Path
 from html import escape
-import importlib.util
-import sys
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / '.guide-build-deps'))
 
 root = Path(__file__).resolve().parents[1]
 images = root / 'docs/images'
 images.mkdir(parents=True, exist_ok=True)
-print({name: bool(importlib.util.find_spec(name)) for name in ['markdown', 'PIL', 'cairosvg']})
 
 def svg(name, title, height, body):
     (images / name).write_text(f'''<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="{height}" viewBox="0 0 1100 {height}" role="img" aria-label="{escape(title)}">
@@ -15,7 +11,7 @@ def svg(name, title, height, body):
 <style>text{{font-family:Segoe UI,Arial,sans-serif;fill:#192a31}}.title{{font-size:30px;font-weight:700}}.small{{font-size:17px;fill:#52646a}}.label{{font-size:21px;font-weight:600}}.mono{{font-family:Consolas,monospace;font-size:19px}}.white{{fill:#fffefa}}.green{{fill:#196656}}</style>
 <rect width="1100" height="{height}" rx="12" fill="#f2f0eb"/>{body}</svg>''', encoding='utf-8')
 
-svg('workflow.svg', 'From map package to RNS315 in four steps', 330, '''
+svg('map-update-overview.svg', 'From map package to RNS315 in four steps', 330, '''
 <text x="40" y="54" class="title">Four steps to a prepared map card</text>
 <text x="40" y="87" class="small">Copy the files before locking the card.</text>
 ''' + ''.join(f'''<rect x="{40+i*265}" y="130" width="225" height="145" rx="8" fill="#fffefa" stroke="#ced5d3"/>
@@ -23,7 +19,7 @@ svg('workflow.svg', 'From map package to RNS315 in four steps', 330, '''
 <text x="{58+i*265}" y="212" class="label">{title}</text><text x="{58+i*265}" y="245" class="small">{subtitle}</text>
 ''' + (f'<path d="M{270+i*265} 200h24" stroke="#196656" stroke-width="3" marker-end="url(#arrow)"/>' if i<3 else '') for i,(title,subtitle) in enumerate([('Copy maps','Computer → SD card'),('Calculate password','CID → calculator'),('Lock the card','ESP32 → CMD42'),('Update the radio','SD card → RNS315')])) )
 
-svg('card-files.svg', "Place the map folder directly in the SD card's root", 470, '''
+svg('sd-card-folders.svg', "Place the map folder directly in the SD card's root", 470, '''
 <text x="40" y="54" class="title">The correct folder layout</text>
 <rect x="40" y="90" width="640" height="325" rx="8" fill="#fffefa" stroke="#ced5d3"/>
 <rect x="40" y="90" width="640" height="45" rx="8" fill="#e6ece8"/>
@@ -46,7 +42,7 @@ wires=''
 for i,((left,right),color) in enumerate(zip(pins,colors)):
     y=195+i*54
     wires += f'<text x="248" y="{y+6}" text-anchor="end" class="mono">{left}</text><circle cx="280" cy="{y}" r="7" fill="{color}"/><path d="M288 {y}H752" stroke="{color}" stroke-width="5"/><circle cx="760" cy="{y}" r="7" fill="{color}"/><text x="790" y="{y+6}" class="mono">{right}</text>'
-svg('wiring.svg','Wiring between MH-SD and a classic ESP32',670, f'''
+svg('esp32-sd-wiring.svg','Wiring between MH-SD and a classic ESP32',670, f'''
 <text x="40" y="54" class="title">Follow the printed pin names</text>
 <text x="40" y="87" class="small">Unplug USB before changing wires or moving the SD card.</text>
 <rect x="55" y="120" width="260" height="430" rx="10" fill="#fffefa" stroke="#ced5d3"/>
@@ -57,7 +53,7 @@ svg('wiring.svg','Wiring between MH-SD and a classic ESP32',670, f'''
 <text x="40" y="623" class="small">Never feed 5 V into a bare SD card or a 3.3 V-only module.</text>
 <text x="40" y="653" class="small">Schematic illustration. Physical pin positions vary between boards.</text>''')
 
-svg('lock-result.svg','Expected status after locking the SD card',400, '''
+svg('expected-card-status.svg','Expected status after locking the SD card',400, '''
 <text x="40" y="54" class="title">Expected output after locking</text>
 <rect x="40" y="90" width="650" height="235" rx="8" fill="#192a31"/>
 <text x="65" y="135" class="mono" style="fill:#d2e4db">LOCK_VERIFIED</text>
@@ -70,7 +66,7 @@ svg('lock-result.svg','Expected status after locking the SD card',400, '''
 <text x="760" y="218" class="label">Card is locked</text>
 <text x="40" y="367" class="small">Unplug USB for ten seconds, then read status again to confirm that the lock persists.</text>''')
 
-svg('radio-steps.svg','Illustrated RNS315 map-update choices',820, '''
+svg('rns315-installation.svg','Illustrated RNS315 map-update choices',820, '''
 <text x="40" y="54" class="title">Look for these choices on RNS315</text>
 <text x="40" y="87" class="small">Illustrations. Menu wording and appearance may vary.</text>
 <rect x="40" y="115" width="650" height="180" rx="10" fill="#242c33"/>
@@ -98,12 +94,13 @@ svg('radio-steps.svg','Illustrated RNS315 map-update choices',820, '''
 
 # Keep the full illustrated guide available locally, without GitHub or a server.
 import markdown
-text=(root/'docs/step-by-step.md').read_text(encoding='utf-8')
-text=text.replace('](images/', '](../docs/images/').replace('](maps.md)', '](#map-sources)').replace('](../CREDITS.md)', '](../CREDITS.md)')
-maps=(root/'docs/maps.md').read_text(encoding='utf-8').replace('# RNS315 V12 EU West maps', '## Map sources')
+text=(root/'docs/update-maps.md').read_text(encoding='utf-8')
+text=text.replace('](images/', '](../docs/images/').replace('](map-downloads.md)', '](#map-sources)')
+text=text.replace('](credits.md)', '](../docs/credits.md)').replace('](tested-results.md)', '](../docs/tested-results.md)')
+maps=(root/'docs/map-downloads.md').read_text(encoding='utf-8').replace('# RNS315 V12 EU West maps', '## Map sources')
 content=markdown.markdown(text+'\n\n'+maps, extensions=['tables','fenced_code'])
 content=content.replace('<h2>Map sources</h2>','<h2 id="map-sources">Map sources</h2>')
 for heading, ident in [('4. Connect the ESP32 and SD module','equipment'),('5. Install the ESP32 program','esp32'),('8. Update the radio','radio')]:
     content=content.replace('<h2>'+heading+'</h2>',f'<h2 id="{ident}">{heading}</h2>')
-(root/'web/guide.html').write_text('''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="referrer" content="no-referrer"><title>RNS315 · Illustrated guide</title><link rel="stylesheet" href="styles.css"></head><body><main class="guide"><header><a class="brand" href="index.html">← RNS315 calculator</a></header><article class="surface">'''+content+'''</article><footer>Original illustrations. Sources and credits are included in the repository.</footer></main></body></html>''',encoding='utf-8')
+(root/'calculator/guide.html').write_text('''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="referrer" content="no-referrer"><title>RNS315 · Illustrated guide</title><link rel="stylesheet" href="assets/styles.css"></head><body><main class="guide"><header><a class="brand" href="index.html">← RNS315 calculator</a></header><article class="surface">'''+content+'''</article><footer>Original illustrations. Sources and credits are included in the repository.</footer></main></body></html>''',encoding='utf-8')
 print('Created five annotated SVG illustrations and the local HTML guide.')

@@ -19,4 +19,4 @@ evidence/
 *.elf
 *.zip
 *.log
-qa/
+.local/

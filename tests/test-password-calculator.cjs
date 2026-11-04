@@ -3,7 +3,7 @@ const assert = require("node:assert/strict");
 const crypto = require("node:crypto");
 const fs = require("node:fs");
 const path = require("node:path");
-const { calculatePassword, describeCid, crc7, md5Hex } = require("./calculator.js");
+const { calculatePassword, describeCid, crc7, md5Hex } = require("../calculator/assets/password-calculator.js");
 let checks = 0;
 function equal(actual, expected, label) { assert.equal(actual, expected, label); checks += 1; }
 function throws(fn, label) { assert.throws(fn, label); checks += 1; }
@@ -27,7 +27,7 @@ equal(md5Hex("æøå 🚗"), crypto.createHash("md5").update("æøå 🚗", "utf
 equal((crc7(Uint8Array.from(Buffer.from("4000000000", "hex"))) << 1) | 1, 0x95, "SD CMD0 CRC");
 equal((crc7(Uint8Array.from(Buffer.from("48000001AA", "hex"))) << 1) | 1, 0x87, "SD CMD8 CRC");
 
-const vectors = JSON.parse(fs.readFileSync(path.join(__dirname, "../tests/public_vectors.json"), "utf8"));
+const vectors = JSON.parse(fs.readFileSync(path.join(__dirname, "../tests/fixtures/public-cid-password-pairs.json"), "utf8"));
 assert.ok(vectors.length >= 2);
 for (const vector of vectors) {
   const password = calculatePassword(vector.cid);

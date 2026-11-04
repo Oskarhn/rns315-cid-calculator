@@ -3,23 +3,25 @@ const {chromium} = require('playwright');
 const fs=require('node:fs'), path=require('node:path'), assert=require('node:assert/strict');
 const {pathToFileURL}=require('node:url');
 const root=path.resolve(__dirname,'..');
-const calculator=require(path.join(root,'web/calculator.js'));
+const calculator=require(path.join(root,'calculator/assets/password-calculator.js'));
 const cid=calculator.describeCid('5D53424C32424D31013917CA53010400').canonicalCid;
 const password=calculator.calculatePassword(cid);
 async function main(){
-  fs.mkdirSync(path.join(root,'qa'),{recursive:true});
-  const browser=await chromium.launch({headless:true});
+  fs.mkdirSync(path.join(root,'.local/qa'),{recursive:true});
+  const launchOptions = {headless:true};
+  if (process.env.PLAYWRIGHT_BROWSER_CHANNEL) launchOptions.channel = process.env.PLAYWRIGHT_BROWSER_CHANNEL;
+  const browser=await chromium.launch(launchOptions);
   try {
     const context=await browser.newContext({viewport:{width:1120,height:1000},acceptDownloads:true});
     const page=await context.newPage(); const errors=[]; const remote=[];
     page.on('pageerror', e=>errors.push(e.message)); page.on('request',r=>{if(/^https?:/.test(r.url()))remote.push(r.url());});
-    await page.goto(pathToFileURL(path.join(root,'web/index.html')).href);
+    await page.goto(pathToFileURL(path.join(root,'calculator/index.html')).href);
     await page.locator('#example-button').click();
     assert.equal(await page.locator('#password-output').inputValue(),password);
     assert.equal(await page.locator('#result-panel').isVisible(),true);
     const downloadPromise=page.waitForEvent('download'); await page.locator('#save-button').click(); const download=await downloadPromise;
     const downloadText=fs.readFileSync(await download.path(),'utf8'); assert.ok(downloadText.includes('PASSWORD_HEX='+password));
-    await page.locator('#calculator').screenshot({path:path.join(root,'docs/images/calculator-desktop.png')});
+    await page.locator('#calculator').screenshot({path:path.join(root,'docs/images/calculator-example.png')});
     await page.locator('#cid-input').fill('123'); assert.equal(await page.locator('#result-panel').isVisible(),false);
     await page.locator('#calculate-button').click(); assert.ok((await page.locator('#error-message').innerText()).length>10);
     await page.locator('#cid-input').fill('<img src=x onerror=alert(1)>'); await page.locator('#calculate-button').click();
@@ -27,16 +29,16 @@ async function main(){
     await page.locator('#example-button').click();
     await page.setViewportSize({width:390,height:844});
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
-    await page.locator('#calculator').screenshot({path:path.join(root,'docs/images/calculator-mobile.png')});
-    await page.goto(pathToFileURL(path.join(root,'web/guide.html')).href); await page.waitForLoadState('load');
+    await page.locator('#calculator').screenshot({path:path.join(root,'docs/images/calculator-on-mobile.png')});
+    await page.goto(pathToFileURL(path.join(root,'calculator/guide.html')).href); await page.waitForLoadState('load');
     assert.equal(await page.locator('img').count(),8);
     assert.equal(await page.evaluate(()=>[...document.images].every(i=>i.complete&&i.naturalWidth>0)),true);
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
     // Inspect each drawing at useful resolution, separate from the guide page.
     await page.setViewportSize({width:1100,height:850});
-    for(const name of ['wiring','radio-steps','card-files','lock-result','workflow']){
-      await page.goto(pathToFileURL(path.join(root,'web/guide.html')).href);
-      await page.locator('img[src$="'+name+'.svg"]').screenshot({path:path.join(root,'qa',name+'.png')});
+    for(const name of ['esp32-sd-wiring','rns315-installation','sd-card-folders','expected-card-status','map-update-overview']){
+      await page.goto(pathToFileURL(path.join(root,'calculator/guide.html')).href);
+      await page.locator('img[src$="'+name+'.svg"]').screenshot({path:path.join(root,'.local/qa',name+'.png')});
     }
     assert.deepEqual(errors,[]); assert.deepEqual(remote,[]);
     await context.close();
@@ -56,7 +58,7 @@ async function main(){
       Object.defineProperty(navigator,'serial',{value:{async requestPort(){return port;}}});
     },{cid,password});
     const serialPage=await serialContext.newPage(); serialPage.on('dialog',d=>d.accept());
-    await serialPage.goto(pathToFileURL(path.join(root,'web/index.html')).href);
+    await serialPage.goto(pathToFileURL(path.join(root,'calculator/index.html')).href);
     await serialPage.locator('#connect-button').click();
     await serialPage.waitForFunction(()=>document.getElementById('card-state').textContent==='Card read. Card is open for PC.');
     await serialPage.locator('#prepared-check').check();

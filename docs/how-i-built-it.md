@@ -1,10 +1,10 @@
 # How I found the solution
 
-I wanted to update the maps in my Passat's RNS315 and understand why an SD card with the right files still needed a separate password. The project grew into an open workflow that other owners could follow without repeating the research or paying for each card password.
+I started this because I wanted new maps on my Passat's RNS315. Copying the files wasn't enough: the radio expected a password tied to the SD card. I wanted to understand that part and make the process easier for the next person.
 
-I sourced the equipment, wired the SD module and ESP32, handled the cards and carried out the tests on the physical radio. I also bought a password for my own card, which provided a concrete comparison value while the calculation was being recovered. Photos, screen messages and feedback from those practical steps helped connect the analysis to the hardware.
+I got the equipment, wired the SD module and ESP32, and did the practical work with the cards and radio. **I've now made two SD cards and checked that both work in my RNS315.** I also checked publicly posted CID/password pairs, and I had a password I'd already bought for my own card to compare against.
 
-I used AI as a technical tool along the way: for the user-friendly application, code generation and checking, and difficult firmware decoding and analysis. I handled the practical work, equipment, goals and in-car experiments. This repository brings that work together into something others can inspect, use and improve.
+I used AI to help build the app, write and check code, and work through the harder firmware decoding and analysis. I handled the equipment and in-car experiments. The code and explanation are here so other owners can follow the same process and improve it.
 
 ## Start with the card's identity
 
@@ -16,7 +16,7 @@ RNS315 reads CID and calculates a password for that card. The card must be prepa
 
 [Daniel Kučera (danman)](https://blog.danman.eu/updating-rns315-maps-for-fun-and-profit/) had demonstrated that the password travels in SD traffic. An SD sniffer and logic analyzer let him capture the value the radio tried to use. An ESP32 could then set the card password.
 
-That was an important starting point. A capture gives the answer for a particular card; a calculator needs the rule for other CIDs too. The next stage therefore examined the radio's firmware.
+That gave us somewhere to start. Capturing traffic gets the answer for one card, but I wanted a calculator that could work with another CID too. Finding the rule meant looking inside the radio's firmware.
 
 ## From an update package to readable code
 
@@ -28,7 +28,7 @@ The analysis used a local **EU1508/0270** update. Its ISO contained a DAT file w
 4. A 256-byte metadata record supplied the RC4 key. The decoder could then reconstruct the program content and verify its frames.
 5. The readable code could be traced from the SD driver and CID to the password transformation, then to CMD42.
 
-The decoder and supporting tools are under [research](../research/reproduce.md). Firmware and decoded proprietary programs are not bundled. Source identities, packing formats and steps are documented so someone with the same source file can repeat the work.
+The decoder and supporting tools are under [research](../research/README.md). Firmware and decoded proprietary programs are not bundled. Source identities, packing formats and steps are documented so someone with the same source file can repeat the work.
 
 ## The calculation
 
@@ -48,10 +48,10 @@ For the analyzed European profile:
 
 This is why plain `MD5(CID)` gives the wrong answer: CRC handling, the additions and byte order matter. MD5 here reproduces an existing radio format.
 
-## Checks and the open result
+## Checking that it worked
 
-The result was compared with the password bought for the project's card and with published CID/password pairs. A bounded emulator also ran the recovered firmware function. The calculator has separate Python and JavaScript implementations, tested against public values and independent CRC/MD5 checks.
+I checked the method on the two SD cards, compared the results with public CID/password pairs, and checked the calculator against the password I'd bought. All ten public examples match. A bounded emulator also ran the recovered firmware function, and the Python and JavaScript versions are tested separately against public values and known CRC/MD5 results. The [test results](tested-results.md) give the details.
 
-My private card values stay private. The rule, constants, programs, verification method and public comparison data are open. Others can review the code, repeat the analysis and improve the tool without a hidden online service.
+My own card values stay private. The rule, constants, code and public examples are all included, so you can check how it works without relying on an online password service.
 
-Further details: [addresses and source hashes](research.md), [repeat the decoding](../research/reproduce.md) and [public comparison data](additional-public-vectors.md).
+Further details: [addresses and source hashes](technical-analysis.md), [repeat the decoding](../research/README.md) and [public comparison data](public-test-vectors.md).

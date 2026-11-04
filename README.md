@@ -1,19 +1,25 @@
 # RNS315 · CID calculator and map update guide
 
-Calculate your SD card's password locally and prepare it for a European RNS315. No account, paid password service, changeable CID or SD sniffer is needed.
+This is the tool I put together while updating the maps in my Passat's RNS315. It calculates the SD card password on your computer, so you don't need to buy a password or capture one with an SD sniffer.
 
-**[Start here: illustrated step-by-step guide](docs/step-by-step.md)** · **[How I found the solution](docs/project-story.md)** · **[Credits](CREDITS.md)**
+**[Follow the map update guide](docs/update-maps.md)** · **[What I've tested](docs/tested-results.md)** · **[How I worked it out](docs/how-i-built-it.md)**
 
-![Calculator with a public example CID and its password](docs/images/calculator-desktop.png)
+## Tested on real cards
+
+**I've made two SD cards with this method and checked that both work in my RNS315.** I also compared the calculator's output with CID/password pairs I found publicly. All ten public examples in the test set match, byte for byte.
+
+The [test results](docs/tested-results.md) cover those card checks, the public examples and the software tests. My own card CIDs and passwords stay private.
+
+![Calculator with a public example CID and its password](docs/images/calculator-example.png)
 
 ## Quick start
 
 1. On GitHub, select **Code → Download ZIP** and extract the entire archive.
-2. Double-click **START.html** to open the calculator.
+2. Double-click **Open-Calculator.html** to open the calculator.
 3. Paste your card's CID and click **Calculate password**. With the ESP32 setup, **Read CID** fills it in automatically.
-4. Click **Save CID and password**, then follow the [guide](docs/step-by-step.md) to copy maps, lock the card and update the radio.
+4. Click **Save CID and password**, then follow the [guide](docs/update-maps.md) to copy maps, lock the card and update the radio.
 
-The calculator needs no installation or server. Use desktop Chrome or Edge for the optional ESP32 connection.
+The calculator runs straight from the folder. Use desktop Chrome or Edge if you want it to talk to the ESP32 as well.
 
 ## What you need
 
@@ -22,23 +28,23 @@ The calculator needs no installation or server. Use desktop Chrome or Edge for t
 | 8–32 GB SDHC card, preferably 16 or 32 GB | Store the maps on a single FAT32 partition. |
 | Ordinary USB card reader | Copy map files from your computer. |
 | Classic ESP32-WROOM-32 / ESP32 DevKit, SD module and jumper wires | Read CID and set the CMD42 card password. |
-| RNS315 V12 EU West map package | See [map sources](docs/maps.md). |
+| RNS315 V12 EU West map package | See [map sources](docs/map-downloads.md). |
 
-The guide uses a full-size MH-SD module with a suitable regulator and level shifting. It accepts full-size SD cards and microSD cards in passive SD adapters. Wire it by the printed pin names, using the [diagram](docs/step-by-step.md#4-connect-the-esp32-and-sd-module).
+The guide uses a full-size MH-SD module with a suitable regulator and level shifting. It accepts full-size SD cards and microSD cards in passive SD adapters. Wire it by the printed pin names, using the [diagram](docs/update-maps.md#4-connect-the-esp32-and-sd-module).
 
 ## The workflow
 
-![Copy maps, calculate the password, lock the card and update the radio](docs/images/workflow.svg)
+![Copy maps, calculate the password, lock the card and update the radio](docs/images/map-update-overview.svg)
 
 **Copy maps → read CID → calculate and save the password → lock the card → insert it into RNS315.**
 
 Copy the files before locking the card. CMD42 password locking is different from the physical LOCK switch on an SD adapter. **Open card for PC** removes the calculated RNS315 password when you want to use an ordinary USB reader again.
 
-## Why this project exists
+## How it started
 
-I wanted to update the maps in my Passat's RNS315 without buying a password for every SD card. **Daniel Kučera (danman)** had already demonstrated how to capture the password expected by the radio using an SD sniffer, a logic analyzer and PulseView. His work provided an important starting point.
+I wanted to understand why copying the right map files wasn't enough, and why I had to buy a password for a card I already owned. **Daniel Kučera (danman)** had shown how to capture the password the radio expects using an SD sniffer, a logic analyzer and PulseView. His write-up gave me a useful starting point.
 
-I handled the equipment, wiring, cards and tests in the car, and used AI as a technical tool for the user-friendly application, coding and difficult firmware analysis. That work recovered the calculation from European RNS315 firmware, so a computer can calculate the password directly from CID. The [project story](docs/project-story.md) explains the process and the [research notes](docs/research.md) document the exact transformation. Danman's [original article](https://blog.danman.eu/updating-rns315-maps-for-fun-and-profit/) is credited for the earlier sniffing work.
+I handled the equipment, wiring, cards and tests in the car. I used AI to help with the app, coding and the harder parts of the firmware analysis. We recovered the calculation from European RNS315 firmware, which let me calculate the password directly from CID. The [project story](docs/how-i-built-it.md) explains how, and the [technical notes](docs/technical-analysis.md) give the exact steps. Danman's [original article](https://blog.danman.eu/updating-rns315-maps-for-fun-and-profit/) gets full credit for the earlier sniffing work.
 
 ## Terminal use
 
@@ -54,28 +60,43 @@ Expected output for this public example:
 C99A20843ED7D90B6801E49F2BC80277
 ```
 
-![Actual calculator command and output in a terminal](docs/images/terminal-calculator.png)
+![Actual calculator command and output in a terminal](docs/images/password-command-output.png)
 
 No Python packages are needed. Add `--json` for normalized CID and CRC details. Both 30- and 32-character input are accepted; the calculator rebuilds CRC7 automatically.
 
 ## Source and verification
 
-The browser calculator, Python calculator, ESP32 program, firmware decoder, public test data and documentation are included. There is no hidden calculation or remote API.
+The browser calculator, Python calculator, ESP32 program, firmware decoder and public test data are all here. You can read the calculation, run it yourself and change the code.
 
 ```text
 python -m unittest discover -s tests -v
-node web/test.cjs
-node tests/test_serial.cjs
+node tests/test-password-calculator.cjs
+node tests/test-card-connection.cjs
 ```
 
-The tests cover public CID/password vectors, independent CRC and MD5 checks, invalid input and serial framing. [Developer notes](docs/development.md) describe the program and ESP32 build. [Research reproduction](research/reproduce.md) explains how to repeat the firmware decoding with your own source file.
+The tests cover public CID/password vectors, independent CRC and MD5 checks, invalid input and serial framing. [Developer notes](docs/development.md) describe the program and ESP32 build. [Research reproduction](research/README.md) explains how to repeat the firmware decoding with your own source file.
 
 ## Supported system and maps
 
 This project targets **European RNS315**. Firmware 0270 is the analyzed source, not a requirement for running the calculator. RNS310, RNS510, Discover Media/Pro and other regions use different formats or procedures.
 
-Map data and radio firmware are not included. See [V12 EU West sources](docs/maps.md) for an Italian map-package page and an alternative with a prepared SD card.
+Map data and radio firmware are not included. See [V12 EU West sources](docs/map-downloads.md) for an Italian map-package page and an alternative with a prepared SD card.
+
+## Where things live
+
+```text
+Open-Calculator.html       Open this to get started
+calculator/                Browser app and its offline guide
+sd-card/                   ESP32 program and Windows flashing helper
+docs/                      Update guide, results, explanation and images
+rns315_cid/                Python calculator — no extra packages needed
+tests/                     Calculator, connection and browser checks
+research/                  Firmware decoder and analysis instructions
+scripts/                   Rebuild the guide and its illustrations
+```
+
+For the usual card setup, start with the guide and use `calculator/` and `sd-card/`. The [developer notes](docs/development.md) explain the rest.
 
 ## License
 
-[MIT](LICENSE) for the project's own code and illustrations. Map data, firmware and third-party tools retain their own licenses. See [CREDITS.md](CREDITS.md).
+[MIT](LICENSE) for the project's own code and illustrations. Map data, firmware and third-party tools retain their own licenses. See the [credits](docs/credits.md).

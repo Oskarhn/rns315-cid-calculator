@@ -20,18 +20,18 @@ def main():
     evidence = ROOT / "evidence"
     evidence.mkdir(exist_ok=True)
     stages = [
-        ("inspect_local_firmware.py", [str(iso)]),
-        ("unpack_tsd_records.py", []),
+        ("extract_iso.py", [str(iso)]),
+        ("unpack_update_records.py", []),
         ("prepare_program_streams.py", []),
-        ("maincodec-frames.py", []),
+        ("inspect_program_frames.py", []),
         ("decode_program_streams.py", []),
-        ("resource-extract.py", []),
+        ("extract_resources.py", []),
         ("build_analysis_elf.py", []),
     ]
     for script, extra in stages:
         log = evidence / (Path(script).stem + ".log")
         with log.open("w", encoding="utf-8") as output:
-            subprocess.run([sys.executable, str(ROOT / "tools" / script), *extra], stdout=output, stderr=subprocess.STDOUT, check=True, timeout=120)
+            subprocess.run([sys.executable, str(ROOT / "scripts" / script), *extra], stdout=output, stderr=subprocess.STDOUT, check=True, timeout=120)
         print("Completed " + script)
     programs = json.loads((evidence / "decoded-programs.json").read_text())
     resources = json.loads((evidence / "resource-extraction-validated.json").read_text())

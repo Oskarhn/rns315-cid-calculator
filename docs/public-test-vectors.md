@@ -17,7 +17,7 @@ Published passwords were transcribed as expected values, then stored as SHA-256 
 
 ## Source limitations
 
-The eight additional pairs were visible in public search-engine excerpts of the original forum posts. Direct MHH AUTO retrieval returned HTTP 403 and GPS Zone was unavailable to the browser tool. No login or bypass was attempted. Each is marked `retrieved_via: public-search-index-excerpt` in `tests/public_vectors.json`. This provides weaker source verification than a directly retrieved original post.
+The eight additional pairs were visible in public search-engine excerpts of the original forum posts. Direct MHH AUTO retrieval returned HTTP 403 and GPS Zone was unavailable to the browser tool. No login or bypass was attempted. Each is marked `retrieved_via: public-search-index-excerpt` in `tests/fixtures/public-cid-password-pairs.json`. This provides weaker source verification than a directly retrieved original post.
 
 Five pairs are presented as card examples; the three zero-filled CIDs are demonstration values, not three additional physical cards. Several come from the same contributor. The number of pairs is not the number of independent implementations or authors. Repeated quoted replies are counted once. Duplicates are detected using the first 15 CID bytes, so a changed CRC/end byte does not count as another card.
 

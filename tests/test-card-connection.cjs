@@ -1,6 +1,6 @@
 "use strict";
 const assert = require("node:assert/strict");
-const {Connection, parseReport} = require("../web/serial.js");
+const {Connection, parseReport} = require("../calculator/assets/card-connection.js");
 const CID = "5D53424C32424D31013917CA530104B9";
 function report(locked = true) {
   return `RNS315_SD_TOOL_1\nCMD10_DATA_CRC16=OK\nCMD9_DATA_CRC16=OK\nCID_HEX=${CID}\nCCC7_PASSWORD_CLASS_ADVERTISED=yes\nCMD13_R1=0x00 R2=0x0${locked?1:0}\nCARD_LOCKED_FLAG=${locked?'yes':'no'}\nEND_READONLY_REPORT OK\n`;

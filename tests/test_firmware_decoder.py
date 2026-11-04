@@ -4,7 +4,7 @@ from pathlib import Path
 import struct
 import unittest
 
-path = Path(__file__).resolve().parents[1] / "research" / "tools" / "firmware_codecs.py"
+path = Path(__file__).resolve().parents[1] / "research" / "scripts" / "firmware_codecs.py"
 spec = importlib.util.spec_from_file_location("firmware_codecs", path)
 codecs = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(codecs)

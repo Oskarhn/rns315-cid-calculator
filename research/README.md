@@ -2,12 +2,12 @@
 
 The calculator itself does not require firmware, Ghidra or extra Python packages. These optional research steps reproduce how the firmware was unpacked.
 
-Supply a local ISO on disk. The parser accepts only the exact 40,540,160-byte EU 1508/0270 image whose SHA-256 is documented in [research notes](../docs/research.md).
+Supply a local ISO on disk. The parser accepts only the exact 40,540,160-byte EU 1508/0270 image whose SHA-256 is documented in [research notes](../docs/technical-analysis.md).
 
 From the repository root:
 
 ```text
-python research/decode_firmware.py /path/to/VW_EU_RNS315_1508-0270.iso
+python research/decode_update.py /path/to/VW_EU_RNS315_1508-0270.iso
 ```
 
 The pipeline uses Python's standard library. It validates the source hash, reads ISO9660 extents without mounting the image, parses the observed DAT records, checks all program-frame checksums, and reconstructs the program segments and resource pages. It does not flash, mount, execute or contact a device.
@@ -28,16 +28,16 @@ Import the generated `analysis-record-0058.elf` in Ghidra using Blackfin little-
 
 The ELF wrappers are manufactured carriers for analysis. They preserve decoded load addresses, but their RWX permissions are not a statement about the radio's actual memory permissions. Do not attempt to flash or boot the wrappers.
 
-Useful recovered addresses are listed in [docs/research.md](../docs/research.md). Start with `0x17C158` and the descriptor at `0x236A60` when inspecting the password transformation.
+Useful recovered addresses are listed in [docs/technical-analysis.md](../docs/technical-analysis.md). Start with `0x17C158` and the descriptor at `0x236A60` when inspecting the password transformation.
 
 ## Optional bounded PC emulation
 
-`tools/prepare_emulation_vectors.py` generates two public and eight synthetic inputs in the ignored evidence directory. It does not read a private card-password record.
+`scripts/generate_emulation_vectors.py` generates two public and eight synthetic inputs in the ignored evidence directory. It does not read a private card-password record.
 
 ```text
-python research/tools/prepare_emulation_vectors.py
+python research/scripts/generate_emulation_vectors.py
 ```
 
-With the exact analysis ELF imported and Blackfin language support installed, run `ghidra_scripts/BlackfinPasswordEmulation.java` in Ghidra with the generated vector-JSON path and a result-JSON path as its two arguments. The script checks the ELF hash, limits vectors and instruction steps, initializes scratch memory, and interprets the actual function at `0x17C158`. It does not use native firmware execution or host device callbacks.
+With the exact analysis ELF imported and Blackfin language support installed, run `ghidra/BlackfinPasswordEmulation.java` in Ghidra with the generated vector-JSON path and a result-JSON path as its two arguments. The script checks the ELF hash, limits vectors and instruction steps, initializes scratch memory, and interprets the actual function at `0x17C158`. It does not use native firmware execution or host device callbacks.
 
 The original verification used Ghidra 12.1.4 and the processor-module commit above. The expected result is ten matches, return value 17 and length byte 16. This validates the pure password routine on the supplied CID representation; it does not emulate a physical SD card or radio installation.

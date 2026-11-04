@@ -4,8 +4,8 @@
   "private": true,
   "description": "Development tools for the offline RNS315 calculator",
   "scripts": {
-    "test": "node web/test.cjs && node tests/test_serial.cjs",
-    "test:browser": "node tests/browser.cjs"
+    "test": "node tests/test-password-calculator.cjs && node tests/test-card-connection.cjs",
+    "test:browser": "node tests/test-browser.cjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"

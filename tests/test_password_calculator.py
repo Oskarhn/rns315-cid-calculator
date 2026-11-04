@@ -15,7 +15,7 @@ class CalculatorTests(unittest.TestCase):
         self.assertEqual((crc7(bytes.fromhex("48000001AA")) << 1) | 1, 0x87)
 
     def test_public_compatibility_vectors(self):
-        vectors = json.loads((ROOT / "tests" / "public_vectors.json").read_text())
+        vectors = json.loads((ROOT / "tests" / "fixtures" / "public-cid-password-pairs.json").read_text())
         self.assertGreaterEqual(len(vectors), 2)
         for vector in vectors:
             with self.subTest(vector=vector["name"]):

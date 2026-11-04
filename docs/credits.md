@@ -12,7 +12,7 @@ His article and [danielkucera/esp32-sdcard](https://github.com/danielkucera/esp3
 - [Ghidra](https://github.com/NationalSecurityAgency/ghidra): firmware analysis.
 - [geepot/ghidra-blackfin](https://github.com/geepot/ghidra-blackfin): the Blackfin processor module used for analysis. Its GPL license is separate; the module is not bundled.
 - [angr/pypcode](https://github.com/angr/pypcode): static decoding with that processor specification.
-- [TudorGruian/vw_mmc-tools](https://github.com/TudorGruian/vw_mmc-tools) and the forum posts listed in [public vectors](docs/additional-public-vectors.md): published comparison values.
+- [TudorGruian/vw_mmc-tools](https://github.com/TudorGruian/vw_mmc-tools) and the forum posts listed in [public vectors](public-test-vectors.md): published comparison values.
 - Volkswagen/TechniSat: the legacy RNS315 format being analyzed. This is an independent project, with no affiliation to Volkswagen.
 
 ## Images

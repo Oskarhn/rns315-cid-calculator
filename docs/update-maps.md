@@ -1,20 +1,22 @@
 # Update RNS315 maps, step by step
 
-Copy the maps first, set the card password, then let the radio use or install the maps. The illustrations and terminal examples show what to do and which output to look for.
+I've used this method to make two SD cards that work in my RNS315. Here's the process: copy the maps, set the card password, then put the card in the radio. The pictures and terminal examples show what to look for at each step.
 
-![Workflow](images/workflow.svg)
+If you'd like to see the checks behind the calculator first, they're in [the test results](tested-results.md).
+
+![Workflow](images/map-update-overview.svg)
 
 ## 1. Download and open the tool
 
 1. On GitHub, select **Code → Download ZIP**.
 2. Extract the entire ZIP. Do not open the tool inside the ZIP preview.
-3. Double-click **START.html**. Use desktop Chrome or Edge if you want to connect an ESP32.
+3. Double-click **Open-Calculator.html**. Use desktop Chrome or Edge if you want to connect an ESP32.
 
 The calculator works offline. Installing the ESP32 build tools for the first time needs an internet connection.
 
 ## 2. Get the right maps
 
-Use **RNS315 V12 EU West / Western Europe**, also called **EUR_W_V12**. This package includes Norway. [Map sources](maps.md) includes an Italian page for the package and a prepared-card alternative.
+Use **RNS315 V12 EU West / Western Europe**, also called **EUR_W_V12**. This package includes Norway. [Map sources](map-downloads.md) includes an Italian page for the package and a prepared-card alternative.
 
 Check that your radio is RNS315: hold **SETUP** for about ten seconds and open **Versions**. You do not need to update the radio firmware to run this calculator.
 
@@ -28,7 +30,7 @@ Prefer a **16 or 32 GB SDHC card**, with one **FAT32 partition in MBR**, prefera
 4. Open that folder on the card. It should contain **files.md5**, **version.txt** and the map files.
 5. Safely eject the card in your operating system.
 
-![Correct folder layout](images/card-files.svg)
+![Correct folder layout](images/sd-card-folders.svg)
 
 **Correct:** `SD card/navpsf_update/files.md5`
 
@@ -42,7 +44,7 @@ Use a **classic ESP32-WROOM-32 / ESP32 DevKit**, a USB data cable, six jumper wi
 
 **Unplug USB before changing wires or moving the card.** Follow the printed pin names, not their physical position: ESP32 boards have different layouts.
 
-![Labeled wiring diagram](images/wiring.svg)
+![Labeled wiring diagram](images/esp32-sd-wiring.svg)
 
 | SD module | ESP32 |
 |---|---|
@@ -62,13 +64,13 @@ Keep the wires short. On modules with two pins per label, use one row consistent
 
 Do this once. Leave the SD socket empty while programming.
 
-**Windows:** install [Python 3 with Python Launcher](https://www.python.org/downloads/windows/), then double-click **Flash-ESP32.cmd**. The script creates a local tool environment, installs PlatformIO and uploads this repository's program to ESP32. It replaces the existing ESP32 program; it does not upload anything to the radio.
+**Windows:** install [Python 3 with Python Launcher](https://www.python.org/downloads/windows/), then double-click **sd-card/flash-esp32.cmd**. The script creates a local tool environment, installs PlatformIO and uploads this repository's program to ESP32. It replaces the existing ESP32 program; it does not upload anything to the radio.
 
 **Linux/macOS**, or if you already use PlatformIO, run these commands from the repository directory:
 
 ```text
 python -m pip install platformio==6.1.18
-python -m platformio run -d esp32 -t upload
+python -m platformio run -d sd-card/esp32 -t upload
 ```
 
 If several microcontrollers are connected, disconnect the others first. Close other serial monitors. If uploading stops at **Connecting**, hold **BOOT** until the connection starts, then release it. Do not hold BOOT during normal use afterwards.
@@ -78,22 +80,22 @@ If several microcontrollers are connected, disconnect the others first. Close ot
 You can build the program without uploading anything:
 
 ```text
-python -m platformio run -d esp32
+python -m platformio run -d sd-card/esp32
 ```
 
-![Actual terminal output from building the included ESP32 program](images/terminal-build.png)
+![Actual terminal output from building the included ESP32 program](images/esp32-build-output.png)
 
 The screenshot shows a build. Adding `-t upload` also programs the connected ESP32.
 
 ## 6. Read CID and save the password
 
-1. Open **START.html** in Chrome or Edge.
+1. Open **Open-Calculator.html** in Chrome or Edge.
 2. Click **Connect ESP32** and select its serial port in the browser's dialog.
 3. The tool reads CID and calculates the password. **Read CID** refreshes it when needed.
 4. Click **Save CID and password**.
 5. Check that **rns315-card-password.txt** was saved in your downloads folder. Keep it on your computer.
 
-![Calculator showing the public example and save button](images/calculator-desktop.png)
+![Calculator showing the public example and save button](images/calculator-example.png)
 
 The screenshot uses a public example. **Your card has its own CID and password.** If you already read CID with another tool, paste it into the calculator and click **Calculate password**.
 
@@ -105,7 +107,7 @@ Open a terminal in the extracted repository directory and run:
 python -m rns315_cid 5D53424C32424D31013917CA53010400
 ```
 
-![Calculator command and output](images/terminal-calculator.png)
+![Calculator command and output](images/password-command-output.png)
 
 Replace the example with your card's CID. The command prints the 32-character hexadecimal password. This command only calculates the value; use the browser's ESP32 controls for card locking.
 
@@ -118,7 +120,7 @@ Replace the example with your card's CID. The command prints the 32-character he
 5. Reconnect USB, choose **Connect ESP32**, and check that the card is still reported as locked after power was removed.
 6. Disconnect again and unplug USB before removing the card.
 
-![Expected technical output after locking](images/lock-result.svg)
+![Expected technical output after locking](images/expected-card-status.svg)
 
 This is an expected-output example. After locking, an ordinary USB reader may report an inaccessible card. Do not format it. The physical LOCK switch does not perform CMD42 password locking.
 
@@ -132,7 +134,7 @@ This is an expected-output example. After locking, an ordinary USB reader may re
 6. Wait for completion. Allow plenty of time: a full installation can take around two hours or more. Do not remove the card or force a reset during copying.
 7. Open **Navigation database / Versions** and check the installed V12 version. Use **Remove SD card** in the radio menu before physically removing it.
 
-![Illustrated radio choices](images/radio-steps.svg)
+![Illustrated radio choices](images/rns315-installation.svg)
 
 *Radio screens are illustrations. Labels and appearance vary with language and software version.*
 
@@ -160,4 +162,4 @@ This uses the password calculated for that CID. It will not open a card locked w
 | Card remains locked after a power cycle | That is the expected state before moving it to RNS315. |
 | SD error in the radio | Check the RNS315 map format, folder layout and password for the actual card's CID. |
 
-You do not need an SD sniffer for this workflow. The [earlier sniffing work is credited here](../CREDITS.md).
+You do not need an SD sniffer for this workflow. The [earlier sniffing work is credited here](credits.md).
