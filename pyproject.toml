@@ -6,10 +6,15 @@ build-backend = "setuptools.build_meta"
 name = "rns315-cid-calculator"
 version = "1.0.0"
 description = "Offline CID calculator and illustrated RNS315 map-update guide"
+authors = [{name = "Oskarhn"}]
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
 dependencies = []
+
+[project.urls]
+Repository = "https://github.com/Oskarhn/rns315-cid-calculator"
+Guide = "https://github.com/Oskarhn/rns315-cid-calculator/blob/main/docs/update-maps.md"
 
 [project.scripts]
 rns315-cid = "rns315_cid.__main__:main"
