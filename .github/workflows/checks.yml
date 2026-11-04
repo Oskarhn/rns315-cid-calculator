@@ -1,4 +1,4 @@
-name: Checks
+name: Calculator checks and ESP32 build
 on:
   push:
   pull_request:
@@ -6,6 +6,7 @@ permissions:
   contents: read
 jobs:
   calculator:
+    name: Python and browser calculator checks
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -19,6 +20,7 @@ jobs:
       - run: node tests/test-password-calculator.cjs
       - run: node tests/test-card-connection.cjs
   esp32:
+    name: ESP32 card tool build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
