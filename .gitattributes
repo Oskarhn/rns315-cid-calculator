@@ -1,2 +1,4 @@
+# Keep source files consistent across Windows and Linux.
 * text=auto eol=lf
+# Windows launchers retain the line endings expected by cmd.exe.
 *.cmd text eol=crlf
