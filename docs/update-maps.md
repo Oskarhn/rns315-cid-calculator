@@ -38,6 +38,10 @@ Prefer a **16 or 32 GB SDHC card**, with one **FAT32 partition in MBR**, prefera
 
 Copy the whole extracted package without changing filenames. Do not copy the ZIP/RAR archive itself or change the card's CID.
 
+### Could my computer's own SD slot do the next part?
+
+Possibly. A compatible native SD/MMC reader and the right software can take the place of ESP32. I haven't tested that route myself, so the steps below follow the ESP32 setup I've used. See [native SD reader notes](native-sd-readers.md) before buying hardware. A built-in slot isn't automatically compatible, and a passive microSD-to-SD adapter isn't the same thing as a USB reader.
+
 ## 4. Connect the ESP32 and SD module
 
 Use a **classic ESP32-WROOM-32 / ESP32 DevKit**, a USB data cable, six jumper wires and an SD module. This wiring uses a **full-size MH-SD module with a labeled 5V input, a 3.3 V regulator and suitable SPI level shifting**.

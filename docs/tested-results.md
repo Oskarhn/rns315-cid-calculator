@@ -6,6 +6,8 @@ I've prepared **two SD cards** with this method and checked that **both work in 
 
 These were real cards in my own setup. I haven't put their private CIDs or passwords in this repository. The examples in the guide use public values instead.
 
+Both card tests used ESP32 for the card commands. I haven't tested a computer's native SD reader as a replacement; the [native-reader notes](native-sd-readers.md) describe that researched alternative separately.
+
 ## Public CID/password examples
 
 I also compared the calculation with CID/password pairs I found publicly. The test set contains **ten different CID payloads**, and the calculated password matches every expected value on all **16 bytes**.

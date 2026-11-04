@@ -18,6 +18,8 @@ RNS315 reads CID and calculates a password for that card. The card must be prepa
 
 That gave us somewhere to start. Capturing traffic gets the answer for one card, but I wanted a calculator that could work with another CID too. Finding the rule meant looking inside the radio's firmware.
 
+There was also the earlier [vw_mmc-tools approach](https://github.com/TudorGruian/vw_mmc-tools): change a suitable card to a published CID, then lock it with the password already known for that CID. That makes a map card too, but it needs a card that accepts the CID change. Here the calculator works from the card's existing CID. I'm documenting a different way to get the password, not claiming that making RNS315 cards was new.
+
 ## From an update package to readable code
 
 The analysis used a local **EU1508/0270** update. Its ISO contained a DAT file with several types of update records.
