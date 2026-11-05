@@ -1,6 +1,6 @@
 # RNS315 · CID calculator and map update guide
 
-This is the tool I put together while updating the maps in my Passat's RNS315. It calculates the SD card password on your computer, so you don't need to buy a password or capture one with an SD sniffer.
+This is the tool I put together while updating the maps in my **2011 Volkswagen Passat B7 with European RNS315**. It calculates the SD card password on your computer, so you don't need to buy a password or capture one with an SD sniffer.
 
 **[Follow the map update guide](docs/update-maps.md)** · **[What I've tested](docs/tested-results.md)** · **[How I worked it out](docs/how-i-built-it.md)**
 

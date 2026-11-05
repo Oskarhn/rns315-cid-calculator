@@ -1,6 +1,6 @@
 # How I found the solution
 
-I started this because I wanted new maps on my Passat's RNS315. Copying the files wasn't enough: the radio expected a password tied to the SD card. I wanted to understand that part and make the process easier for the next person.
+I started this because I wanted new maps on the European RNS315 in my 2011 Volkswagen Passat B7. Copying the files wasn't enough: the radio expected a password tied to the SD card. I wanted to understand that part and make the process easier for the next person.
 
 I got the equipment, wired the SD module and ESP32, and did the practical work with the cards and radio. **I've now made two SD cards and checked that both work in my RNS315.** I also checked publicly posted CID/password pairs, and I had a password I'd already bought for my own card to compare against.
 

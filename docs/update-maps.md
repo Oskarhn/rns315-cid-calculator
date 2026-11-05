@@ -1,6 +1,6 @@
 # Update RNS315 maps, step by step
 
-I've used this method to make two SD cards that work in my RNS315. Here's the process: copy the maps, set the card password, then put the card in the radio. The pictures and terminal examples show what to look for at each step.
+I've used this method to make two SD cards that work with the European RNS315 in my 2011 Volkswagen Passat B7. Here's the process: copy the maps, set the card password, then put the card in the radio. The pictures and terminal examples show what to look for at each step.
 
 If you'd like to see the checks behind the calculator first, they're in [the test results](tested-results.md).
 

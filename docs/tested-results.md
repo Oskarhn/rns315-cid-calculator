@@ -2,7 +2,7 @@
 
 ## Two working SD cards
 
-I've prepared **two SD cards** with this method and checked that **both work in my RNS315**. That includes the physical setup: reading each card's CID, preparing it with the matching password and using it in the radio.
+I've prepared **two SD cards** with this method and checked that **both work with the European RNS315 in my 2011 Volkswagen Passat B7**. That includes the physical setup: reading each card's CID, preparing it with the matching password and using it in the radio.
 
 These were real cards in my own setup. I haven't put their private CIDs or passwords in this repository. The examples in the guide use public values instead.
 
