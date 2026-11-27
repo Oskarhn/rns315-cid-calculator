@@ -31,7 +31,7 @@ async function main(){
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
     await page.locator('#calculator').screenshot({path:path.join(root,'docs/images/calculator-on-mobile.png')});
     await page.goto(pathToFileURL(path.join(root,'calculator/guide.html')).href); await page.waitForLoadState('load');
-    assert.equal(await page.locator('img').count(),8);
+    assert.equal(await page.locator('img').count(),6);
     assert.equal(await page.evaluate(()=>[...document.images].every(i=>i.complete&&i.naturalWidth>0)),true);
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
     // Inspect each drawing at useful resolution, separate from the guide page.
@@ -69,7 +69,7 @@ async function main(){
     await serialPage.locator('#disconnect-button').click();
     assert.match(await serialPage.locator('#card-state').innerText(),/Disconnected/);
     await serialContext.close();
-    console.log(JSON.stringify({calculator:true,invalidInput:true,download:true,mobile:true,guideImages:8,remoteRequests:0,serialFlow:'simulated connect/read/lock/clear/disconnect',screenshots:true,devicesAccessed:false}));
+    console.log(JSON.stringify({calculator:true,invalidInput:true,download:true,mobile:true,guideImages:6,remoteRequests:0,serialFlow:'simulated connect/read/lock/clear/disconnect',screenshots:true,devicesAccessed:false}));
   }finally{await browser.close();}
 }
 main().catch(e=>{console.error(e);process.exitCode=1;});

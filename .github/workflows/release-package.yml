@@ -1,0 +1,37 @@
+name: Build beginner release package
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: python -m pip install platformio==6.1.18 Markdown==3.8.1
+      - run: python -m unittest discover -s tests -v
+      - run: npm test
+      - run: python -m platformio run -d sd-card/esp32
+      - run: python scripts/build_user_guide.py
+      - run: python scripts/build_release.py
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:release
+        env:
+          RNS315_RELEASE_BROWSERS: chromium
+      - uses: actions/upload-artifact@v4
+        with:
+          name: RNS315-Easy-Start
+          path: |
+            dist/RNS315-Easy-Start.zip
+            dist/SHA256SUMS.txt
+          if-no-files-found: error

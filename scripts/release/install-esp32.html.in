@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>RNS315 · Install ESP32 program</title></head>
+<body><main>
+<header><a class="brand" href="START-HERE.html">← Start here</a><span class="offline">Version {{VERSION}} · Works offline</span></header>
+<section class="surface"><p class="eyebrow">ONE-TIME SETUP</p><h1>Prepare your ESP32.</h1>
+<p class="lead">Install the included SD card program on a <strong>classic ESP32-WROOM-32 / ESP32 DevKit</strong>. This replaces its current program.</p>
+<ol class="beginner-steps"><li>Leave the <strong>SD socket empty</strong> and connect the ESP32 with a USB data cable.</li><li>Close other serial monitors and disconnect ESP32 from the calculator.</li><li>Confirm below, click <strong>Install program</strong> and select its USB serial port.</li></ol>
+<label class="check"><input id="install-confirm" type="checkbox"> The SD socket is empty. I want to replace the program on this ESP32.</label>
+<div class="actions"><button id="install-button" class="primary" type="button" disabled>Install program</button><a class="button-link" href="Calculator.html">Open calculator</a></div>
+<p id="install-state" role="status" aria-live="polite">Checking the included program files…</p>
+<label for="install-progress" class="sr-only">Installation progress</label><progress id="install-progress" value="0" max="100" hidden></progress>
+<p class="hint">Keep USB connected until installation finishes. This installs the ESP32 tool, not your car's firmware.</p>
+<details class="help"><summary>Can't connect?</summary><p>Use desktop Chrome or Edge and a USB data cable. If connection keeps trying, hold <strong>BOOT</strong> until the chip is detected, then release it. If there is no serial port, check the USB driver supplied by your board's manufacturer.</p><p>This package is for the classic ESP32 only. ESP32-S2/S3/C3 and other variants need different program images.</p></details>
+<details class="help"><summary>Technical status</summary><pre id="install-log" aria-label="Installation log"></pre></details>
+</section><footer><p><a href="Guide.html#equipment">Wiring and next steps</a> · Powered by <a href="https://github.com/espressif/esptool-js">Espressif esptool-js</a> · <a href="THIRD-PARTY-NOTICES.txt">Licenses</a></p></footer>
+</main></body></html>

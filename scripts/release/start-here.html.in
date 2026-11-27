@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>RNS315 · Start here</title></head>
+<body><main>
+<header><a class="brand" href="START-HERE.html"><span class="sd-icon" aria-hidden="true"></span>RNS315 <span>EASY START</span></a><span class="offline">Version {{VERSION}} · Works offline</span></header>
+<section class="surface"><p class="eyebrow">START HERE</p><h1>Your map card, without the commands.</h1>
+<p class="lead">Everything needed to run the calculator is in this folder. Open it in Chrome or Edge on your computer.</p>
+<div class="actions"><a class="primary button-link" href="Calculator.html">Open calculator →</a><a class="button-link" href="Guide.html">Read the picture guide</a></div>
+<h2 class="section-heading">First time?</h2>
+<ol class="beginner-steps"><li><strong>Copy your maps.</strong> The <a href="Guide.html">guide</a> shows the right folder layout. Map files are a separate download.</li><li><strong>Prepare the ESP32.</strong> If it doesn't have the card program yet, <a href="Install-ESP32.html">install it here</a>. The installer runs in your browser.</li><li><strong>Read CID and save the password.</strong> Open the calculator, connect the ESP32 and follow the card-locking steps.</li></ol>
+<p class="note">Already have the card's CID? Paste it into the calculator. You can calculate a password without connecting any hardware.</p>
+<details class="help"><summary>What if I have an SD slot in my computer?</summary><p>A compatible native SD/MMC reader may replace ESP32, with the right driver and CMD42 software. I haven't tested that route myself. See the <a href="Guide.html#native-reader">reader notes</a>.</p></details>
+</section>
+<footer><p>No Python, terminal or account needed to use this package.</p><p>For European RNS315. Hardware is needed to read and lock a card. <a href="https://github.com/Oskarhn/rns315-cid-calculator">Source code and credits</a> · <a href="THIRD-PARTY-NOTICES.txt">Third-party notices</a></p></footer>
+</main></body></html>
