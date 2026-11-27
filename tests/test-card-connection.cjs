@@ -1,6 +1,6 @@
 "use strict";
 const assert = require("node:assert/strict");
-const {Connection, parseReport} = require("../calculator/assets/card-connection.js");
+const {Connection, parseReport, parsePrepared} = require("../calculator/assets/card-connection.js");
 const CID = "5D53424C32424D31013917CA530104B9";
 function report(locked = true) {
   return `RNS315_SD_TOOL_1\nCMD10_DATA_CRC16=OK\nCMD9_DATA_CRC16=OK\nCID_HEX=${CID}\nCCC7_PASSWORD_CLASS_ADVERTISED=yes\nCMD13_R1=0x00 R2=0x0${locked?1:0}\nCARD_LOCKED_FLAG=${locked?'yes':'no'}\nEND_READONLY_REPORT OK\n`;
@@ -8,6 +8,12 @@ function report(locked = true) {
 async function main() {
   assert.deepEqual(parseReport(report()), {cid:CID, locked:true, passwordClass:true});
   assert.equal(parseReport(report(false)).locked, false);
+  assert.equal(parseReport(report().replace(/\n/g,'\r\n')).locked,true);
+  for(const duplicate of ['CID_HEX='+CID,'CARD_LOCKED_FLAG=yes','CMD13_R1=0x00 R2=0x01','CCC7_PASSWORD_CLASS_ADVERTISED=yes','CMD10_DATA_CRC16=OK','END_READONLY_REPORT OK'])assert.throws(()=>parseReport(report()+duplicate+'\n'),/ambiguous/);
+  assert.throws(()=>parseReport(report()+report(false)),/ambiguous/);
+  for(const operation of ['LOCK','CLEAR'])assert.equal(parsePrepared(`PREPARED ${operation} TOKEN=DEADBEEF EXPIRES_MS=60000; CMD42_NOT_YET_SENT\n`,operation),'DEADBEEF');
+  assert.throws(()=>parsePrepared('PREPARED CLEAR TOKEN=DEADBEEF EXPIRES_MS=60000; CMD42_NOT_YET_SENT\n','LOCK'),/different operation/);
+  for(const bad of ['PREPARED LOCK TOKEN=DEADBEEF','PREPARED LOCK TOKEN=DEADBEEF EXPIRES_MS=0; CMD42_NOT_YET_SENT','PREPARED LOCK TOKEN=123 EXPIRES_MS=60000; CMD42_NOT_YET_SENT'])assert.throws(()=>parsePrepared(bad,'LOCK'));
   for (const bad of [report().replace('END_READONLY_REPORT OK','END_READONLY_REPORT ERROR'),report().replace('CMD10_DATA_CRC16=OK','CMD10_DATA_CRC16=FAIL'),report().replace(CID,'123'),report().replace('R2=0x01','R2=0x0100'),report().replace('RNS315_SD_TOOL_1','OTHER_TOOL'), report().replace('R2=0x01','R2=0x80'),report().replace('CARD_LOCKED_FLAG=yes','CARD_LOCKED_FLAG=no')]) assert.throws(()=>parseReport(bad));
   const c = new Connection(()=>{},()=>{});
   const first = c.wait(/^OK$/, 1000);
@@ -56,6 +62,20 @@ async function main() {
   assert.equal(outcome,'timeout');
   assert.ok(writeLockReleased);
   assert.equal(stalled.pending,null);
+  // A broken driver must not keep the entire UI waiting forever during cleanup.
+  const originalTimeout=global.setTimeout;
+  try {
+    global.setTimeout=(fn,ms,...args)=>originalTimeout(fn,ms===3000?5:ms,...args);
+    for(const mode of ['cancel','loop','close']){
+      const blocked=new Connection(()=>{},()=>{});
+      blocked.port={async close(){if(mode==='close')await new Promise(()=>{});}};
+      if(mode==='cancel')blocked.reader={cancel(){return new Promise(()=>{});}};
+      if(mode==='loop')blocked.loopTask=new Promise(()=>{});
+      await assert.rejects(blocked.close(),/Unplug/);
+      assert.equal(blocked.port,null);
+      await assert.rejects(blocked.close(),/Unplug/);
+    }
+  } finally {global.setTimeout=originalTimeout;}
   console.log('Serial framing, status consistency, startup cleanup, stalled-write deadlines and command errors passed. No devices accessed.');
 }
 main().catch(error=>{console.error(error);process.exitCode=1;});
