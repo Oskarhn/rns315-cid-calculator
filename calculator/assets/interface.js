@@ -80,9 +80,9 @@
     const prompt = operation === "LOCK" ? "Lock this card for RNS315? An ordinary USB reader will not be able to open it until the password is removed." : "Remove the RNS315 password from this card? You can then open it with an ordinary USB reader.";
     if (!window.confirm(prompt)) return;
     // ASVS 15.4.2: firmware rechecks this CID immediately before CMD42.
-    const prepared = await connection.query("PREPARE " + operation + " " + card.cid + " " + saved.password, /^PREPARED (LOCK|CLEAR) TOKEN=[0-9A-F]{8}/);
-    const token = /TOKEN=([0-9A-F]{8})/.exec(prepared)?.[1];
-    if (!token) throw new Error("ESP32 did not prepare the operation.");
+    const prepared = await connection.query("PREPARE " + operation + " " + card.cid + " " + saved.password, /^PREPARED /);
+    // Check the operation echo before committing any card change.
+    const token = window.Rns315Serial.parsePrepared(prepared,operation);
     await connection.query("COMMIT " + token, operation === "LOCK" ? /^LOCK_VERIFIED$/ : /^PASSWORD_CLEAR_VERIFIED$/, 15000);
     await readCard(false); $("prepared-check").checked = false;
     if (card.locked !== (operation === "LOCK")) throw new Error("Unexpected lock status. Keep your password file and check status again.");
