@@ -8,11 +8,11 @@ If you'd like to see the checks behind the calculator first, they're in [the tes
 
 ## 1. Download and open the tool
 
-1. On GitHub, select **Code → Download ZIP**.
-2. Extract the entire ZIP. Do not open the tool inside the ZIP preview.
-3. Double-click **Open-Calculator.html**. Use desktop Chrome or Edge if you want to connect an ESP32.
+1. Download **[RNS315-Easy-Start.zip](https://github.com/Oskarhn/rns315-cid-calculator/releases/latest/download/RNS315-Easy-Start.zip)**.
+2. Choose **Extract All**. Keep the extracted files together; don't open them inside the ZIP preview.
+3. Double-click **START-HERE.html** and choose **Open calculator**. Use desktop Chrome or Edge for the ESP32 USB connection.
 
-The calculator works offline. Installing the ESP32 build tools for the first time needs an internet connection.
+The release includes the calculator, guide and ESP32 program. They work offline, and you don't need Python or terminal commands.
 
 ## 2. Get the right maps
 
@@ -68,32 +68,21 @@ Keep the wires short. On modules with two pins per label, use one row consistent
 
 Do this once. Leave the SD socket empty while programming.
 
-**Windows:** install [Python 3 with Python Launcher](https://www.python.org/downloads/windows/), then double-click **sd-card/flash-esp32.cmd**. The script creates a local tool environment, installs PlatformIO and uploads this repository's program to ESP32. It replaces the existing ESP32 program; it does not upload anything to the radio.
-
-**Linux/macOS**, or if you already use PlatformIO, run these commands from the repository directory:
-
-```text
-python -m pip install platformio==6.1.18
-python -m platformio run -d sd-card/esp32 -t upload
-```
+1. From **START-HERE.html**, choose **Install ESP32 program**. You can also open **Install-ESP32.html** directly.
+2. Connect the ESP32 using a USB data cable, with the SD socket empty.
+3. Check the box confirming that the socket is empty and you want to replace the ESP32's current program.
+4. Click **Install program** and select the ESP32's serial port in the browser dialog.
+5. Keep USB connected while the program is installed and verified.
 
 If several microcontrollers are connected, disconnect the others first. Close other serial monitors. If uploading stops at **Connecting**, hold **BOOT** until the connection starts, then release it. Do not hold BOOT during normal use afterwards.
 
-**Expected final message:** `SUCCESS`. Unplug USB, insert the prepared SD card into the module, then reconnect USB.
+**Expected final message:** **Program installed and verified.** Unplug USB, insert the prepared SD card into the module, then reconnect USB.
 
-You can build the program without uploading anything:
-
-```text
-python -m platformio run -d sd-card/esp32
-```
-
-![Actual terminal output from building the included ESP32 program](images/esp32-build-output.png)
-
-The screenshot shows a build. Adding `-t upload` also programs the connected ESP32.
+The installer accepts a classic ESP32 with at least 4 MB of flash. It stops before writing if it detects another chip family or secure download mode. For building or flashing from source, see [the developer instructions](development.md).
 
 ## 6. Read CID and save the password
 
-1. Open **Open-Calculator.html** in Chrome or Edge.
+1. From **START-HERE.html**, choose **Open calculator** in Chrome or Edge.
 2. Click **Connect ESP32** and select its serial port in the browser's dialog.
 3. The tool reads CID and calculates the password. **Read CID** refreshes it when needed.
 4. Click **Save CID and password**.
@@ -102,18 +91,6 @@ The screenshot shows a build. Adding `-t upload` also programs the connected ESP
 ![Calculator showing the public example and save button](images/calculator-example.png)
 
 The screenshot uses a public example. **Your card has its own CID and password.** If you already read CID with another tool, paste it into the calculator and click **Calculate password**.
-
-### Terminal alternative
-
-Open a terminal in the extracted repository directory and run:
-
-```text
-python -m rns315_cid 5D53424C32424D31013917CA53010400
-```
-
-![Calculator command and output](images/password-command-output.png)
-
-Replace the example with your card's CID. The command prints the 32-character hexadecimal password. This command only calculates the value; use the browser's ESP32 controls for card locking.
 
 ## 7. Lock the card
 

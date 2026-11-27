@@ -4,6 +4,16 @@ This is the tool I put together while updating the maps in my **2011 Volkswagen 
 
 **[Follow the map update guide](docs/update-maps.md)** · **[What I've tested](docs/tested-results.md)** · **[How I worked it out](docs/how-i-built-it.md)**
 
+## Download and start
+
+**[Download RNS315 Easy Start](https://github.com/Oskarhn/rns315-cid-calculator/releases/latest/download/RNS315-Easy-Start.zip)**
+
+1. Download the ZIP and choose **Extract All**.
+2. Open **START-HERE.html** in the extracted folder.
+3. Choose **Open calculator**, or **Install ESP32 program** if this is your first setup.
+
+The release includes the calculator, picture guide and an offline browser installer for the classic ESP32. **No Python, terminal commands or account are needed.** Use Chrome or Edge on your computer for the USB connection. Maps are a separate download.
+
 ## Tested on real cards
 
 **I've made two SD cards with this method and checked that both work in my RNS315.** I also compared the calculator's output with CID/password pairs I found publicly. All ten public examples in the test set match, byte for byte.
@@ -14,12 +24,12 @@ The [test results](docs/tested-results.md) cover those card checks, the public e
 
 ## Quick start
 
-1. On GitHub, select **Code → Download ZIP** and extract the entire archive.
-2. Double-click **Open-Calculator.html** to open the calculator.
+1. Download the [Easy Start release](https://github.com/Oskarhn/rns315-cid-calculator/releases/latest/download/RNS315-Easy-Start.zip) and extract the entire archive.
+2. Double-click **START-HERE.html** and choose **Open calculator**.
 3. Paste your card's CID and click **Calculate password**. With the ESP32 setup, **Read CID** fills it in automatically.
 4. Click **Save CID and password**, then follow the [guide](docs/update-maps.md) to copy maps, lock the card and update the radio.
 
-The calculator runs straight from the folder. Use desktop Chrome or Edge if you want it to talk to the ESP32 as well.
+The calculator runs straight from the folder. If you've downloaded the source code instead, **Open-Calculator.html** still opens the development copy.
 
 ## What you need
 

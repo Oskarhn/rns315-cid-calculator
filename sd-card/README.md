@@ -4,8 +4,9 @@ This folder holds the ESP32 side of the setup. It reads the card's CID and handl
 
 You may be able to use a compatible native SD/MMC reader instead. I haven't tested that route myself; see the [reader research and checks](../docs/native-sd-readers.md). A built-in slot alone doesn't guarantee CMD42 support. This folder's program and flashing helper are for the ESP32 route.
 
-- **Windows:** connect the ESP32 with its SD socket empty, then double-click [flash-esp32.cmd](flash-esp32.cmd).
-- **Other systems or an existing PlatformIO install:** from the repository root, run `python -m platformio run -d sd-card/esp32 -t upload`.
+- **Easy Start release:** open **START-HERE.html → Install ESP32 program**. The included browser installer needs no Python or commands.
+- **From source on Windows:** connect the ESP32 with its SD socket empty, then double-click [flash-esp32.cmd](flash-esp32.cmd). This development route needs Python.
+- **Existing PlatformIO install:** from the repository root, run `python -m platformio run -d sd-card/esp32 -t upload`.
 
 The program lives in [esp32/src/card-tool.cpp](esp32/src/card-tool.cpp). Its board and build settings are in [esp32/platformio.ini](esp32/platformio.ini).
 

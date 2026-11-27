@@ -21,6 +21,8 @@ python -m platformio run -d sd-card/esp32
 
 The ESP32 platform is pinned to `espressif32@6.12.0`. A build does not connect to hardware. `-t upload` programs a connected ESP32. Only distribute ESP32 binaries built from this repository's general-purpose source.
 
+![Example terminal output from an ESP32 build](images/esp32-build-output.png)
+
 Public comparison data lives in `tests/fixtures/public-cid-password-pairs.json`. [Provenance](public-test-vectors.md) distinguishes direct sources from public search excerpts. Keep private passwords, maps, firmware, raw logs and vehicle files out of Git.
 
 ## Serial protocol
@@ -61,3 +63,19 @@ python scripts/build_user_guide.py
 ```
 
 Terminal images contain captured output from the documented public calculator command and an ESP32 build, rendered for readability. The lock-status image is an expected-output example, and the radio screens are illustrations.
+
+## Build the beginner release
+
+The release builder uses an explicit file list. It includes the four compiled classic-ESP32 images inside the offline installer, plus the calculator, guide and license notices. It never collects private records or the working directory as a whole.
+
+```text
+npm ci
+python -m pip install platformio==6.1.18
+python -m platformio run -d sd-card/esp32
+python scripts/build_release.py
+npm run test:release
+```
+
+`PLATFORMIO_CORE_DIR` or `--platformio-core` selects a non-default PlatformIO directory. Output goes to `dist/RNS315-Easy-Start.zip`, with `SHA256SUMS.txt` alongside it. `release-info.json` records the source commit and firmware hashes. The installer bundles pinned esptool-js and verifies the images before offering installation; it also requests MD5 readback verification while flashing.
+
+Release tests exercise the real ZIP in Chrome and Edge. Installer success and failure paths use simulated serial/loader objects; they do not flash connected hardware.

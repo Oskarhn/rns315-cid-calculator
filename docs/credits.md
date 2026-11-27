@@ -12,6 +12,7 @@ His article and [danielkucera/esp32-sdcard](https://github.com/danielkucera/esp3
 - [Ghidra](https://github.com/NationalSecurityAgency/ghidra): firmware analysis.
 - [geepot/ghidra-blackfin](https://github.com/geepot/ghidra-blackfin): the Blackfin processor module used for analysis. Its GPL license is separate; the module is not bundled.
 - [angr/pypcode](https://github.com/angr/pypcode): static decoding with that processor specification.
+- [Espressif esptool-js](https://github.com/espressif/esptool-js): the offline release's browser-based ESP32 installer. Its Apache-2.0 license and dependency notices are included in the release ZIP.
 - [TudorGruian/vw_mmc-tools](https://github.com/TudorGruian/vw_mmc-tools): an earlier PC-based RNS315 workflow using a fixed, published CID/password pair. Its guide changes CID before locking the card. The project also provided one of the public comparison pairs used here.
 - The forum posts listed in [public vectors](public-test-vectors.md): further published comparison values.
 - Volkswagen/TechniSat: the legacy RNS315 format being analyzed. This is an independent project, with no affiliation to Volkswagen.

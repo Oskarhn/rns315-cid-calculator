@@ -4,11 +4,11 @@
 <p><img alt="Workflow" src="../docs/images/map-update-overview.svg" /></p>
 <h2>1. Download and open the tool</h2>
 <ol>
-<li>On GitHub, select <strong>Code → Download ZIP</strong>.</li>
-<li>Extract the entire ZIP. Do not open the tool inside the ZIP preview.</li>
-<li>Double-click <strong>Open-Calculator.html</strong>. Use desktop Chrome or Edge if you want to connect an ESP32.</li>
+<li>Download <strong><a href="https://github.com/Oskarhn/rns315-cid-calculator/releases/latest/download/RNS315-Easy-Start.zip">RNS315-Easy-Start.zip</a></strong>.</li>
+<li>Choose <strong>Extract All</strong>. Keep the extracted files together; don't open them inside the ZIP preview.</li>
+<li>Double-click <strong>START-HERE.html</strong> and choose <strong>Open calculator</strong>. Use desktop Chrome or Edge for the ESP32 USB connection.</li>
 </ol>
-<p>The calculator works offline. Installing the ESP32 build tools for the first time needs an internet connection.</p>
+<p>The release includes the calculator, guide and ESP32 program. They work offline, and you don't need Python or terminal commands.</p>
 <h2>2. Get the right maps</h2>
 <p>Use <strong>RNS315 V12 EU West / Western Europe</strong>, also called <strong>EUR_W_V12</strong>. This package includes Norway. <a href="#map-sources">Map sources</a> includes an Italian page for the package and a prepared-card alternative.</p>
 <p>Check that your radio is RNS315: hold <strong>SETUP</strong> for about ten seconds and open <strong>Versions</strong>. You do not need to update the radio firmware to run this calculator.</p>
@@ -73,21 +73,19 @@
 <p>Keep the wires short. On modules with two pins per label, use one row consistently and check the labels. An SCK wire shifted by one position is easy to miss.</p>
 <h2 id="esp32">5. Install the ESP32 program</h2>
 <p>Do this once. Leave the SD socket empty while programming.</p>
-<p><strong>Windows:</strong> install <a href="https://www.python.org/downloads/windows/">Python 3 with Python Launcher</a>, then double-click <strong>sd-card/flash-esp32.cmd</strong>. The script creates a local tool environment, installs PlatformIO and uploads this repository's program to ESP32. It replaces the existing ESP32 program; it does not upload anything to the radio.</p>
-<p><strong>Linux/macOS</strong>, or if you already use PlatformIO, run these commands from the repository directory:</p>
-<pre><code class="language-text">python -m pip install platformio==6.1.18
-python -m platformio run -d sd-card/esp32 -t upload
-</code></pre>
+<ol>
+<li>From <strong>START-HERE.html</strong>, choose <strong>Install ESP32 program</strong>. You can also open <strong>Install-ESP32.html</strong> directly.</li>
+<li>Connect the ESP32 using a USB data cable, with the SD socket empty.</li>
+<li>Check the box confirming that the socket is empty and you want to replace the ESP32's current program.</li>
+<li>Click <strong>Install program</strong> and select the ESP32's serial port in the browser dialog.</li>
+<li>Keep USB connected while the program is installed and verified.</li>
+</ol>
 <p>If several microcontrollers are connected, disconnect the others first. Close other serial monitors. If uploading stops at <strong>Connecting</strong>, hold <strong>BOOT</strong> until the connection starts, then release it. Do not hold BOOT during normal use afterwards.</p>
-<p><strong>Expected final message:</strong> <code>SUCCESS</code>. Unplug USB, insert the prepared SD card into the module, then reconnect USB.</p>
-<p>You can build the program without uploading anything:</p>
-<pre><code class="language-text">python -m platformio run -d sd-card/esp32
-</code></pre>
-<p><img alt="Actual terminal output from building the included ESP32 program" src="../docs/images/esp32-build-output.png" /></p>
-<p>The screenshot shows a build. Adding <code>-t upload</code> also programs the connected ESP32.</p>
+<p><strong>Expected final message:</strong> <strong>Program installed and verified.</strong> Unplug USB, insert the prepared SD card into the module, then reconnect USB.</p>
+<p>The installer accepts a classic ESP32 with at least 4 MB of flash. It stops before writing if it detects another chip family or secure download mode. For building or flashing from source, see <a href="../docs/development.md">the developer instructions</a>.</p>
 <h2>6. Read CID and save the password</h2>
 <ol>
-<li>Open <strong>Open-Calculator.html</strong> in Chrome or Edge.</li>
+<li>From <strong>START-HERE.html</strong>, choose <strong>Open calculator</strong> in Chrome or Edge.</li>
 <li>Click <strong>Connect ESP32</strong> and select its serial port in the browser's dialog.</li>
 <li>The tool reads CID and calculates the password. <strong>Read CID</strong> refreshes it when needed.</li>
 <li>Click <strong>Save CID and password</strong>.</li>
@@ -95,12 +93,6 @@ python -m platformio run -d sd-card/esp32 -t upload
 </ol>
 <p><img alt="Calculator showing the public example and save button" src="../docs/images/calculator-example.png" /></p>
 <p>The screenshot uses a public example. <strong>Your card has its own CID and password.</strong> If you already read CID with another tool, paste it into the calculator and click <strong>Calculate password</strong>.</p>
-<h3>Terminal alternative</h3>
-<p>Open a terminal in the extracted repository directory and run:</p>
-<pre><code class="language-text">python -m rns315_cid 5D53424C32424D31013917CA53010400
-</code></pre>
-<p><img alt="Calculator command and output" src="../docs/images/password-command-output.png" /></p>
-<p>Replace the example with your card's CID. The command prints the 32-character hexadecimal password. This command only calculates the value; use the browser's ESP32 controls for card locking.</p>
 <h2>7. Lock the card</h2>
 <ol>
 <li>Check the box confirming that the maps are copied and you have saved CID and password.</li>

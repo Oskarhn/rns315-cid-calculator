@@ -22,6 +22,12 @@ Before the calculation was recovered, I bought a password for my own card. The c
 
 ## Software checks
 
+### Easy Start release
+
+The beginner ZIP contains the calculator, an illustrated guide and a browser-based ESP32 installer with its program files included. The extracted package is checked in Chrome and Edge, including a folder path with spaces, password calculation and download, offline images and the installer's firmware hashes.
+
+Installer checks use simulated devices for successful installation, a wrong chip family, secure download mode, insufficient flash, a verification failure and a cancelled port selection. These are software checks of the new installer, separate from the two physical SD card tests above.
+
 ### Downloaded-copy check · 4 November 2026
 
 The GitHub ZIP was downloaded and checked against a saved private CID/password pair from one of my cards. The Python calculator, command-line output, JSON output and browser calculator all matched that stored password exactly.

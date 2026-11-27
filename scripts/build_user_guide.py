@@ -97,6 +97,7 @@ import markdown
 text=(root/'docs/update-maps.md').read_text(encoding='utf-8')
 text=text.replace('](images/', '](../docs/images/').replace('](map-downloads.md)', '](#map-sources)')
 text=text.replace('](credits.md)', '](../docs/credits.md)').replace('](tested-results.md)', '](../docs/tested-results.md)')
+text=text.replace('](development.md)', '](../docs/development.md)')
 text=text.replace('](native-sd-readers.md)', '](#native-reader)')
 maps=(root/'docs/map-downloads.md').read_text(encoding='utf-8').replace('# RNS315 V12 EU West maps', '## Map sources')
 reader=(root/'docs/native-sd-readers.md').read_text(encoding='utf-8')
