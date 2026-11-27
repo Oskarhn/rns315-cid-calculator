@@ -1,6 +1,6 @@
 {
   "name": "rns315-cid-calculator",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": true,
   "description": "Browser calculator and development checks for RNS315 SD card passwords",
   "license": "MIT",

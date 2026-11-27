@@ -79,3 +79,5 @@ npm run test:release
 `PLATFORMIO_CORE_DIR` or `--platformio-core` selects a non-default PlatformIO directory. Output goes to `dist/RNS315-Easy-Start.zip`, with `SHA256SUMS.txt` alongside it. `release-info.json` records the source commit and firmware hashes. The installer bundles pinned esptool-js and verifies the images before offering installation; it also requests MD5 readback verification while flashing.
 
 Release tests exercise the real ZIP in Chrome and Edge. Installer success and failure paths use simulated serial/loader objects; they do not flash connected hardware.
+
+Fault-injection coverage and the recovery deadlines are documented in [adversarial-testing.md](adversarial-testing.md). The card app requires a single unambiguous status report and an acknowledgement of the exact requested password operation before it sends `COMMIT`. Cleanup invalidates the old connection before waiting for the driver, so a stalled driver cannot keep the interface busy indefinitely.

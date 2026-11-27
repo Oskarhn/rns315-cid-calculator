@@ -28,6 +28,8 @@ The beginner ZIP contains the calculator, an illustrated guide and a browser-bas
 
 Installer checks use simulated devices for successful installation, a wrong chip family, secure download mode, insufficient flash, a verification failure and a cancelled port selection. These are software checks of the new installer, separate from the two physical SD card tests above.
 
+The [adversarial checks](adversarial-testing.md) also exercised duplicate card identities, mismatched operation confirmations, repeated clicks, corrupt firmware data and hung USB operations. The issues reproduced in v1.1.0 are corrected in v1.1.1 and covered by regression tests.
+
 ### Downloaded-copy check · 4 November 2026
 
 The GitHub ZIP was downloaded and checked against a saved private CID/password pair from one of my cards. The Python calculator, command-line output, JSON output and browser calculator all matched that stored password exactly.

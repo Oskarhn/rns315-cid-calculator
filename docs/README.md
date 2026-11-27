@@ -5,6 +5,7 @@
 | How to make a map card | [Update the maps](update-maps.md) |
 | Whether a built-in SD slot could replace ESP32 | [Native SD reader notes](native-sd-readers.md) |
 | What I've actually checked | [Test results](tested-results.md) |
+| What happened when the release was deliberately pushed into bad states | [Adversarial testing](adversarial-testing.md) |
 | The story behind the calculator | [How I built it](how-i-built-it.md) |
 | The exact calculation and firmware findings | [Technical analysis](technical-analysis.md) |
 | V12 EU West maps | [Map downloads](map-downloads.md) |
